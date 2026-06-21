@@ -54,7 +54,7 @@
 52. Responsive style
 53. Overlay Effect Bg image style
 54. Modal Popup style
- 
+
 ----------------------------------------------------------------------------------- */
 
 
@@ -843,7 +843,7 @@ hr {
     padding: 0;
 }
 .logo-img {
-    width: 130px;
+    width: 220px;
     text-align: center;
 }
 .dropdown .nav-link i {
@@ -1203,7 +1203,7 @@ hr {
     color: #f5b754;
     margin-left: 20px;
     -webkit-animation-delay: .6s;
-    animation-delay: .6s;  
+    animation-delay: .6s;
 }
 .header .caption h5 span i {
     font-style: normal;
@@ -1244,7 +1244,7 @@ hr {
 }
 .slider-fade .item .caption {
     z-index: 9;
-    
+
     position: relative;
     top: 50%;
     -webkit-transform: translate(0%, -50%);
@@ -2392,7 +2392,7 @@ font-family: 'Outfit', sans-serif;
     overflow: hidden;
     z-index: 1;
     border-radius: 20px;
-    
+
         width: 100%;
     transform: scale(1);
     transition: transform 500ms ease;
@@ -2415,7 +2415,7 @@ font-family: 'Outfit', sans-serif;
     opacity: 0;
     border-radius: 20px;
 }
-.cars1 .item .con.opacity-1 { 
+.cars1 .item .con.opacity-1 {
     opacity: 0;
 }
 .cars1 .item .con.active{
@@ -2712,7 +2712,7 @@ font-family: 'Outfit', sans-serif;
 .cars2 .item .curv-butn .icon i {
     font-weight: 300;
     font-style: normal;
-    
+
 }
 .cars2 .item .curv-butn .icon i span {
     font-family: "Outfit", sans-serif;
@@ -3449,11 +3449,11 @@ font-family: 'Outfit', sans-serif;
     color: #1b1b1b;
      -webkit-transition: .5s;
     transition: .5s;
-    
+
 }
 .car-types2 .item:hover .bg-icon {
     opacity: 0.1;
-    color: #1b1b1b;  
+    color: #1b1b1b;
      -webkit-transition: .5s;
     transition: .5s;
 }
@@ -3677,7 +3677,7 @@ font-family: 'Outfit', sans-serif;
 .car-types4 .item .curv-butn .icon i {
     font-size: 14px;
     font-weight: 300;
-    font-style: normal;  
+    font-style: normal;
 }
 .car-types4 .item .curv-butn .br-left-top {
     position: absolute;
@@ -4001,7 +4001,7 @@ font-family: 'Outfit', sans-serif;
     font-size: 15px;
     font-weight: 700;
     font-style: normal;
-    
+
 }
 .services2 .item .curv-butn .br-left-top {
     position: absolute;
@@ -4268,8 +4268,8 @@ font-family: 'Outfit', sans-serif;
     right: -20px;
 }
 .process-number .item .con h5 {
-    font-size: 21px; 
-    color: #1b1b1b; 
+    font-size: 21px;
+    color: #1b1b1b;
 }
 .process-number .item .con p {
     color: #222;
@@ -4466,7 +4466,7 @@ font-family: 'Outfit', sans-serif;
     -webkit-transition: all 1.25s cubic-bezier(.01, .71, .26, .94);
     -moz-transition: all 1.25s cubic-bezier(.01, .71, .26, .94);
     transition: all 1.25s cubic-bezier(.01, .71, .26, .94);
-    border-radius: 7px;   
+    border-radius: 7px;
 }
 .gallery-box {
     overflow: hidden;
@@ -4483,7 +4483,7 @@ font-family: 'Outfit', sans-serif;
 .gallery-box .gallery-img {
     position: relative;
     overflow: hidden;
-    transition: 700ms cubic-bezier(0.17, 0.67, 0, 1.01);  
+    transition: 700ms cubic-bezier(0.17, 0.67, 0, 1.01);
 }
 .gallery-box .gallery-img:after {
     content: " ";
@@ -4966,7 +4966,7 @@ height: 100% !important;
     display: inline-flex;
     justify-content: center;
 }
-.price .item .rmore .arrow span { 
+.price .item .rmore .arrow span {
     color: #1b1b1b;
     font-size: 14px;
     display: inline-block;
@@ -4986,7 +4986,7 @@ height: 100% !important;
   color: #fff;
 }
 .price .item .rmore:hover .arrow span {
-    color: #fff;   
+    color: #fff;
 }
 /* active */
 .price .item .rmore.active {
@@ -4998,7 +4998,7 @@ height: 100% !important;
   background: #f5b754;
 }
 .price .item .rmore .arrow.active i {
-    color: #1b1b1b;   
+    color: #1b1b1b;
 }
 /* border */
 .price .item .rmore .br-left-top {
@@ -5661,7 +5661,7 @@ height: 100% !important;
 .blog2 .item .curv-butn .icon i {
     font-weight: 300;
     font-style: normal;
-    
+
 }
 .blog2 .item .curv-butn .icon i span {
     font-family: "Outfit", sans-serif;
@@ -6967,10 +6967,10 @@ height: 100% !important;
     }
     .car-details .sidebar-car {
         margin-top: 30px;
-    }   
+    }
     .blog2 .post-cont {
         padding: 30px 15px;
-    }  
+    }
 }
 
 

@@ -3,7 +3,7 @@
         <div class="container">
             <!-- Logo -->
             <div class="logo-wrapper">
-                <a class="logo" href="#"> <img src="{{ asset('assets/logo.jpeg') }}" class="logo-img"
+                <a class="logo" href="#"> <img src="{{ asset('assets/Logo_t.png') }}" class="logo-img"
                         alt=""> </a>
                 <!--<a class="logo" href="{{url('/')}}"><h2>Midnight<span>Lux</span></h2></a>-->
             </div>
@@ -17,7 +17,7 @@
                      <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{url('/')}}">Home</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{route('about')}}">About</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->is('services') ? 'active' : '' }}" href="{{route('services')}}">Services</a></li>
-                    <li class="nav-item"><a class="nav-link {{ request()->is('cars') ? 'active' : '' }}" href="{{route('cars')}}">Cars</a></li>
+                    <li class="nav-item"><a class="nav-link {{ request()->is('car') ? 'active' : '' }}" href="{{route('car')}}">Cars</a></li>
                     {{-- <li class="nav-item"><a class="nav-link" href="about.html">Blog</a></li> --}}
                     <li class="nav-item"><a class="nav-link {{ request()->is('contact') ? 'active' : '' }}" href="{{route('contact')}}">Contact</a></li>
                 </ul>
