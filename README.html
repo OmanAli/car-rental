@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moellim Dashboard - Developer Documentation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #1e2130;
+    background: #fff;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    height: 100vh;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #00703C;
+    color: white;
+    padding: 80px;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    right: -100px; top: -100px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    right: 80px; bottom: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    color: #b7f5d4;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+    width: fit-content;
+  }
+  .cover h1 { font-size: 52px; font-weight: 800; line-height: 1.1; margin-bottom: 16px; }
+  .cover h1 span { color: #7fffb8; }
+  .cover .subtitle { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 48px; max-width: 500px; }
+  .cover-meta { display: flex; gap: 48px; margin-top: 64px; }
+  .cover-meta-item label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.5); display: block; margin-bottom: 4px; }
+  .cover-meta-item span { font-size: 14px; font-weight: 600; color: white; }
+  .cover-logo {
+    position: absolute;
+    top: 48px; right: 80px;
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+  }
+  .cover-logo span { color: #7fffb8; }
+
+  /* ── Page Layout ── */
+  .page {
+    padding: 56px 72px;
+    page-break-inside: avoid;
+  }
+  .page-break { page-break-after: always; }
+
+  /* ── Section Headers ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #00703C;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f1a2e;
+    margin-bottom: 4px;
+    border-bottom: 2px solid #00703C;
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+  }
+  h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e2130;
+    margin: 24px 0 10px;
+  }
+  h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    margin: 16px 0 6px;
+  }
+  p { margin-bottom: 10px; color: #374151; }
+
+  /* ── TOC ── */
+  .toc { page-break-after: always; }
+  .toc-title { font-size: 28px; font-weight: 800; color: #0f1a2e; margin-bottom: 32px; }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e5e7eb;
+  }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: #00703C;
+    min-width: 36px;
+  }
+  .toc-text { font-size: 13px; font-weight: 500; color: #374151; flex: 1; }
+  .toc-dots { flex: 1; border-bottom: 1px dotted #d1d5db; margin: 0 12px; }
+  .toc-page { font-size: 12px; color: #9ca3af; min-width: 30px; text-align: right; }
+  .toc-group { margin-bottom: 4px; }
+  .toc-group-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #9ca3af; padding: 16px 0 4px 36px; }
+
+  /* ── Info / Alert Boxes ── */
+  .box {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 12.5px;
+  }
+  .box-green { background: #f0fdf4; border-left: 4px solid #00703C; }
+  .box-blue  { background: #eff6ff; border-left: 4px solid #2563eb; }
+  .box-amber { background: #fffbeb; border-left: 4px solid #d97706; }
+  .box-red   { background: #fef2f2; border-left: 4px solid #dc2626; }
+  .box-gray  { background: #f9fafb; border-left: 4px solid #6b7280; }
+  .box-title { font-weight: 700; margin-bottom: 4px; }
+  .box-green .box-title { color: #065f46; }
+  .box-blue  .box-title { color: #1e40af; }
+  .box-amber .box-title { color: #92400e; }
+  .box-red   .box-title { color: #991b1b; }
+  .box-gray  .box-title { color: #374151; }
+
+  /* ── Code Blocks ── */
+  pre, code {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+  }
+  pre {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    overflow-x: auto;
+    line-height: 1.7;
+  }
+  code {
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+  .comment { color: #64748b; }
+  .kw   { color: #93c5fd; }
+  .str  { color: #86efac; }
+  .fn   { color: #fde68a; }
+  .num  { color: #f9a8d4; }
+
+  /* ── File Tree ── */
+  .file-tree {
+    background: #0f172a;
+    color: #94a3b8;
+    border-radius: 8px;
+    padding: 20px 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 2;
+    margin: 12px 0;
+  }
+  .file-tree .dir  { color: #60a5fa; font-weight: 700; }
+  .file-tree .file { color: #e2e8f0; }
+  .file-tree .note { color: #475569; font-style: italic; }
+
+  /* ── Step List ── */
+  .steps { counter-reset: step; margin: 16px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    page-break-inside: avoid;
+  }
+  .step-num {
+    counter-increment: step;
+    min-width: 32px; height: 32px;
+    background: #00703C;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-body { flex: 1; padding-top: 4px; }
+  .step-body strong { display: block; font-size: 13px; margin-bottom: 4px; }
+
+  /* ── Badge Pills ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 2px;
+  }
+  .badge-green  { background: #dcfce7; color: #166534; }
+  .badge-blue   { background: #dbeafe; color: #1e40af; }
+  .badge-amber  { background: #fef3c7; color: #92400e; }
+  .badge-red    { background: #fee2e2; color: #991b1b; }
+  .badge-gray   { background: #f3f4f6; color: #374151; }
+  .badge-purple { background: #ede9fe; color: #5b21b6; }
+
+  /* ── Table ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12px; }
+  th {
+    background: #f8fafc;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: #374151; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Grid ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+
+  /* ── Card ── */
+  .card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fff;
+  }
+  .card-title { font-size: 12px; font-weight: 700; color: #0f1a2e; margin-bottom: 6px; }
+  .card p { font-size: 11.5px; color: #6b7280; margin: 0; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
+
+  /* ── Footer ── */
+  @media print {
+    .cover { height: 100vh; }
+    .page-break { page-break-after: always; }
+    h2 { page-break-before: auto; }
+    pre, .box, .step { page-break-inside: avoid; }
+    @page { margin: 0; size: A4; }
+  }
+
+  /* ── Highlight lines in code ── */
+  .hl { background: rgba(255,255,255,0.08); display: block; margin: 0 -20px; padding: 0 20px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     COVER PAGE
+═══════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">Moel<span>lim</span></div>
+  <div class="cover-badge">Developer Documentation</div>
+  <h1>Moodle 5.2<br>Custom <span>Dashboard</span><br>Setup Guide</h1>
+  <p class="subtitle">Complete developer reference for installing, configuring, and customising the Moellim LMS dashboard at Riphah International University.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <label>Project</label>
+      <span>Moellim (QEC Dashboard)</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Platform</label>
+      <span>Moodle 5.2 on XAMPP (Windows)</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Date</label>
+      <span>June 2026</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>PHP</label>
+      <span>8.3 Thread-Safe (VS17 x64)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     TABLE OF CONTENTS
+═══════════════════════════════════════════════ -->
+<div class="page toc">
+  <p class="section-label">Contents</p>
+  <div class="toc-title">Table of Contents</div>
+
+  <div class="toc-group-title">Environment Setup</div>
+  <div class="toc-item"><span class="toc-num">01</span><span class="toc-text">System Requirements</span><span class="toc-dots"></span><span class="toc-page">3</span></div>
+  <div class="toc-item"><span class="toc-num">02</span><span class="toc-text">XAMPP Stack Configuration</span><span class="toc-dots"></span><span class="toc-page">3</span></div>
+  <div class="toc-item"><span class="toc-num">03</span><span class="toc-text">PHP 8.3 Integration</span><span class="toc-dots"></span><span class="toc-page">4</span></div>
+  <div class="toc-item"><span class="toc-num">04</span><span class="toc-text">MariaDB 12.3 Upgrade</span><span class="toc-dots"></span><span class="toc-page">4</span></div>
+
+  <div class="toc-group-title">Apache Configuration</div>
+  <div class="toc-item"><span class="toc-num">05</span><span class="toc-text">httpd.conf Changes</span><span class="toc-dots"></span><span class="toc-page">5</span></div>
+  <div class="toc-item"><span class="toc-num">06</span><span class="toc-text">httpd-vhosts.conf (VirtualHost)</span><span class="toc-dots"></span><span class="toc-page">5</span></div>
+  <div class="toc-item"><span class="toc-num">07</span><span class="toc-text">httpd-xampp.conf (Directory Security)</span><span class="toc-dots"></span><span class="toc-page">5</span></div>
+
+  <div class="toc-group-title">Moodle Installation</div>
+  <div class="toc-item"><span class="toc-num">08</span><span class="toc-text">Moodle 5.2 Architecture (public/ folder)</span><span class="toc-dots"></span><span class="toc-page">6</span></div>
+  <div class="toc-item"><span class="toc-num">09</span><span class="toc-text">Manual config.php Creation</span><span class="toc-dots"></span><span class="toc-page">6</span></div>
+  <div class="toc-item"><span class="toc-num">10</span><span class="toc-text">PHP Extensions Setup</span><span class="toc-dots"></span><span class="toc-page">7</span></div>
+  <div class="toc-item"><span class="toc-num">11</span><span class="toc-text">Hosts File & wwwroot</span><span class="toc-dots"></span><span class="toc-page">7</span></div>
+
+  <div class="toc-group-title">Custom Dashboard Plugin</div>
+  <div class="toc-item"><span class="toc-num">12</span><span class="toc-text">Plugin Architecture</span><span class="toc-dots"></span><span class="toc-page">8</span></div>
+  <div class="toc-item"><span class="toc-num">13</span><span class="toc-text">File Structure</span><span class="toc-dots"></span><span class="toc-page">8</span></div>
+  <div class="toc-item"><span class="toc-num">14</span><span class="toc-text">PHP Data Layer</span><span class="toc-dots"></span><span class="toc-page">9</span></div>
+  <div class="toc-item"><span class="toc-num">15</span><span class="toc-text">Frontend (Tailwind + Chart.js)</span><span class="toc-dots"></span><span class="toc-page">9</span></div>
+  <div class="toc-item"><span class="toc-num">16</span><span class="toc-text">Dashboard Redirect (.htaccess)</span><span class="toc-dots"></span><span class="toc-page">10</span></div>
+
+  <div class="toc-group-title">Reference</div>
+  <div class="toc-item"><span class="toc-num">17</span><span class="toc-text">Error Log & Fixes</span><span class="toc-dots"></span><span class="toc-page">10</span></div>
+  <div class="toc-item"><span class="toc-num">18</span><span class="toc-text">Key File Paths Cheatsheet</span><span class="toc-dots"></span><span class="toc-page">11</span></div>
+  <div class="toc-item"><span class="toc-num">19</span><span class="toc-text">QEC Surveys Roadmap</span><span class="toc-dots"></span><span class="toc-page">11</span></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 1 – SYSTEM REQUIREMENTS
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 01 – 02</p>
+  <h2>System Requirements & XAMPP Setup</h2>
+
+  <h3>Minimum Requirements</h3>
+  <table>
+    <tr><th>Component</th><th>Minimum</th><th>Used in this project</th><th>Notes</th></tr>
+    <tr><td>Moodle</td><td>5.2</td><td><span class="badge badge-green">5.2</span></td><td>Downloaded from moodle.org</td></tr>
+    <tr><td>PHP</td><td>8.3.0</td><td><span class="badge badge-green">8.3 TS VS17 x64</span></td><td>Thread Safe, VS17 build required for Apache Lounge</td></tr>
+    <tr><td>MariaDB</td><td>10.11+</td><td><span class="badge badge-green">12.3</span></td><td>Upgraded from old XAMPP 10.4.32</td></tr>
+    <tr><td>Apache</td><td>2.4+</td><td><span class="badge badge-green">2.4.58</span></td><td>From XAMPP — VS17 build</td></tr>
+    <tr><td>OpenSSL</td><td>3.1.x</td><td><span class="badge badge-green">3.1.3</span></td><td>Apache ships 3.1.3; PHP 8.3 is compatible</td></tr>
+    <tr><td>OS</td><td>Windows 10</td><td><span class="badge badge-gray">Win 10 Pro 22H2</span></td><td>x64</td></tr>
+  </table>
+
+  <div class="box box-amber">
+    <div class="box-title">⚠ PHP 8.5 Incompatibility</div>
+    PHP 8.5 requires OpenSSL 3.5.6 while Apache 2.4.58 ships OpenSSL 3.1.3. Loading curl fails silently. <strong>Downgrade to PHP 8.3</strong> — it is compatible with Apache's OpenSSL.
+  </div>
+
+  <h3>XAMPP Stack Layout</h3>
+  <div class="file-tree">
+<span class="dir">C:\xampp_moodle\</span>
+├── <span class="dir">apache\</span>         <span class="note">← Apache 2.4.58 (VS17)</span>
+│   ├── conf\httpd.conf
+│   └── conf\extra\
+│       ├── httpd-vhosts.conf    <span class="note">← VirtualHost config</span>
+│       └── httpd-xampp.conf     <span class="note">← Directory security</span>
+├── <span class="dir">php\</span>             <span class="note">← PHP 8.3 TS VS17 x64</span>
+│   ├── php.ini                  <span class="note">← Extension config</span>
+│   ├── php8ts.dll
+│   ├── php8apache2_4.dll
+│   └── ext\                     <span class="note">← All extension DLLs</span>
+├── <span class="dir">mysql\</span>           <span class="note">← MariaDB 12.3</span>
+│   ├── bin\my.ini               <span class="note">← DB config</span>
+│   └── data\                    <span class="note">← Fresh initialized data dir</span>
+├── <span class="dir">htdocs\</span>
+│   └── <span class="dir">moellim\</span>       <span class="note">← Moodle 5.2 source</span>
+│       ├── config.php           <span class="note">← Manually created</span>
+│       ├── .htaccess            <span class="note">← Blocks /moellim direct access</span>
+│       └── <span class="dir">public\</span>        <span class="note">← Moodle 5.x web root</span>
+└── <span class="dir">tmp\</span>             <span class="note">← MariaDB tmp dir</span>
+
+<span class="dir">C:\moellimdata\</span>              <span class="note">← Moodle dataroot (outside htdocs)</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 3 – PHP 8.3
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 03 – 04</p>
+  <h2>PHP 8.3 & MariaDB 12.3 Setup</h2>
+
+  <h3>Installing PHP 8.3 Thread-Safe (VS17 x64)</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Download PHP 8.3 TS VS17 x64</strong>
+        From <code>windows.php.net/download</code> — choose "Thread Safe" zip matching VS17 (Visual Studio 2022 build).
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Extract to <code>C:\xampp_moodle\php\</code></strong>
+        Replace old PHP folder contents. Keep the path identical — Apache config references this path.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Update <code>httpd-xampp.conf</code> LoadFile/LoadModule</strong>
+        <pre>LoadFile "C:/xampp_moodle/php/php8ts.dll"
+LoadFile "C:/xampp_moodle/php/libpq.dll"
+LoadFile "C:/xampp_moodle/php/libsqlite3.dll"
+LoadModule php_module "C:/xampp_moodle/php/php8apache2_4.dll"</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Enable required extensions in <code>php.ini</code></strong>
+        <pre>extension_dir = "C:\xampp_moodle\php\ext"
+extension=curl
+extension=gd
+extension=intl
+extension=mbstring
+extension=openssl
+extension=soap
+extension=sodium
+extension=zip
+max_input_vars = 5000</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">🚫 Do NOT add extra LoadFile for libcrypto/libssl</div>
+    Attempting to LoadFile Apache's own OpenSSL DLLs alongside PHP's causes Apache to crash on startup. Only load the three DLLs listed above.
+  </div>
+
+  <h3>MariaDB 12.3 Upgrade</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Stop MySQL service in XAMPP control panel</strong>
+        Back up <code>C:\xampp_moodle\mysql\data\</code> if needed.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Extract MariaDB 12.3 into <code>C:\xampp_moodle\mysql\</code></strong>
+        Overwrite bin/, lib/, etc. — do NOT overwrite data/ yet.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Create <code>C:\xampp_moodle\mysql\bin\my.ini</code></strong>
+        <pre>[client]
+port=3306
+[mysqld]
+port=3306
+basedir="C:/xampp_moodle/mysql"
+tmpdir="C:/xampp_moodle/tmp"
+datadir="C:/xampp_moodle/mysql/data"
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+sql_mode=NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>Initialize fresh data directory</strong>
+        Clear <code>data\</code> folder then run:
+        <pre>C:\xampp_moodle\mysql\bin\mariadb-install-db.exe --datadir="C:\xampp_moodle\mysql\data"</pre>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <strong>Create the Moodle database</strong>
+        Open phpMyAdmin → New → database name: <code>moellim</code>, collation: <code>utf8mb4_unicode_ci</code>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 5 – APACHE CONFIG
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 05 – 07</p>
+  <h2>Apache Configuration Files</h2>
+
+  <h3>httpd.conf — Key Checks</h3>
+  <p>No major changes required. Verify these two lines are present and uncommented:</p>
+  <pre><span class="hl">LoadModule rewrite_module modules/mod_rewrite.so</span>   <span class="comment"># Required for .htaccess redirects</span>
+
+&lt;Directory "C:/xampp_moodle/htdocs"&gt;
+<span class="hl">    AllowOverride All</span>   <span class="comment"># Required for .htaccess to work</span>
+    Require all granted
+&lt;/Directory&gt;</pre>
+
+  <h3>httpd-vhosts.conf — VirtualHost for Moellim</h3>
+  <p>This routes <code>http://moellim</code> to Moodle's <code>public/</code> subfolder, which is the Moodle 5.x web root.</p>
+  <pre>&lt;VirtualHost *:80&gt;
+    ServerName moellim
+<span class="hl">    DocumentRoot "C:/xampp_moodle/htdocs/moellim/public"</span>
+    &lt;Directory "C:/xampp_moodle/htdocs/moellim/public"&gt;
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+
+  <div class="box box-blue">
+    <div class="box-title">💡 Why DocumentRoot points to /public</div>
+    Moodle 5.x moved its web root into a <code>public/</code> subfolder for security. The parent directory (moellim/) contains config.php and other server-only files that must never be web-accessible.
+  </div>
+
+  <h3>httpd-xampp.conf — Directory Security</h3>
+  <p>Denies web access to the parent <code>moellim/</code> directory, only allowing <code>public/</code>.</p>
+  <pre><span class="comment"># Block access to parent Moodle directory</span>
+&lt;Directory "C:/xampp_moodle/htdocs/moellim"&gt;
+    AllowOverride All
+    Require all denied
+&lt;/Directory&gt;
+
+<span class="comment"># Allow only the public web root</span>
+&lt;Directory "C:/xampp_moodle/htdocs/moellim/public"&gt;
+    Require all granted
+    AllowOverride All
+&lt;/Directory&gt;</pre>
+
+  <h3>Windows Hosts File</h3>
+  <p>Add this entry so <code>http://moellim</code> resolves locally:</p>
+  <p>File: <code>C:\Windows\System32\drivers\etc\hosts</code></p>
+  <pre>127.0.0.1    moellim</pre>
+  <div class="box box-amber">
+    <div class="box-title">⚠ Run Notepad as Administrator</div>
+    The hosts file requires admin rights to edit. Right-click Notepad → "Run as administrator", then open the file.
+  </div>
+
+  <h3>Moellim Root .htaccess</h3>
+  <p>File: <code>C:\xampp_moodle\htdocs\moellim\.htaccess</code> — blocks all web access to the parent folder.</p>
+  <pre>&lt;IfModule mod_authz_core.c&gt;
+    Require all denied
+&lt;/IfModule&gt;</pre>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 8 – MOODLE INSTALL
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 08 – 11</p>
+  <h2>Moodle 5.2 Installation</h2>
+
+  <h3>Moodle 5.x Architecture Change</h3>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Moodle 4.x (old)</div>
+      <p>Web root was the Moodle directory itself. <code>DocumentRoot</code> pointed directly to <code>/moellim/</code>.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Moodle 5.x (new) ✓</div>
+      <p>Web files moved to <code>public/</code> subfolder. <code>DocumentRoot</code> must point to <code>/moellim/public/</code>.</p>
+    </div>
+  </div>
+
+  <h3>Manual config.php Creation</h3>
+  <p>The web installer can get stuck on the "Web server not configured" warning even when the server is correct. The fix is to bypass the installer by creating <code>config.php</code> manually.</p>
+  <p>File: <code>C:\xampp_moodle\htdocs\moellim\config.php</code></p>
+  <pre>&lt;?php
+unset($CFG);
+global $CFG;
+$CFG = new stdClass();
+
+$CFG-&gt;dbtype    = <span class="str">'mariadb'</span>;   <span class="comment">// NOT 'mysqli' — must match driver name</span>
+$CFG-&gt;dblibrary = <span class="str">'native'</span>;
+$CFG-&gt;dbhost    = <span class="str">'localhost'</span>;
+$CFG-&gt;dbname    = <span class="str">'moellim'</span>;
+$CFG-&gt;dbuser    = <span class="str">'root'</span>;
+$CFG-&gt;dbpass    = <span class="str">''</span>;
+$CFG-&gt;prefix    = <span class="str">'mdl_'</span>;
+$CFG-&gt;dboptions = [
+    <span class="str">'dbpersist'</span>   =&gt; <span class="kw">false</span>,
+    <span class="str">'dbport'</span>      =&gt; <span class="str">''</span>,
+    <span class="str">'dbsocket'</span>    =&gt; <span class="str">''</span>,
+    <span class="str">'dbcollation'</span> =&gt; <span class="str">'utf8mb4_unicode_ci'</span>,
+];
+
+<span class="hl">$CFG-&gt;wwwroot = <span class="str">'http://moellim'</span>;</span>      <span class="comment">// No /public — VirtualHost handles it</span>
+$CFG-&gt;dataroot  = <span class="str">'C:\\moellimdata'</span>;   <span class="comment">// Outside htdocs for security</span>
+$CFG-&gt;admin     = <span class="str">'admin'</span>;
+$CFG-&gt;directorypermissions = 02777;
+$CFG-&gt;routerconfigured = <span class="kw">false</span>;
+
+require_once(__DIR__ . <span class="str">'/lib/setup.php'</span>);</pre>
+
+  <div class="box box-red">
+    <div class="box-title">⛔ wwwroot must NOT end with /public</div>
+    Even though DocumentRoot is /public, set <code>$CFG->wwwroot = 'http://moellim'</code> (no /public). Moodle throws a fatal error if wwwroot ends in /public.
+  </div>
+
+  <h3>Dataroot Directory</h3>
+  <p>Create <code>C:\moellimdata\</code> manually. It must be outside the web root (<code>htdocs/</code>) for security.</p>
+  <pre>mkdir C:\moellimdata</pre>
+  <p>Apache/PHP must have read/write access to this folder.</p>
+
+  <h3>Completing the Install</h3>
+  <p>After creating config.php, visit <code>http://moellim/admin/index.php</code>. Moodle will run database setup and create all tables. Accept all prompts.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 12 – CUSTOM PLUGIN
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 12 – 13</p>
+  <h2>Custom Dashboard Plugin</h2>
+
+  <h3>Plugin Type: Local Plugin</h3>
+  <p>A Moodle <strong>local plugin</strong> (<code>local_*</code>) is the correct type for a standalone custom page that doesn't fit into courses or blocks. It lives at <code>public/local/</code> and has no UI constraints imposed by Moodle's block system.</p>
+
+  <table>
+    <tr><th>Feature</th><th>Block Plugin</th><th>Local Plugin ✓ (used here)</th></tr>
+    <tr><td>Custom full-page layout</td><td>No</td><td>Yes</td></tr>
+    <tr><td>External CSS frameworks</td><td>Stripped by purifier</td><td>Full control</td></tr>
+    <tr><td>Access Moodle DB directly</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Redirect-able URL</td><td>No</td><td>Yes (via .htaccess)</td></tr>
+  </table>
+
+  <h3>File Structure</h3>
+  <div class="file-tree">
+<span class="dir">public/local/moellim_dashboard/</span>
+├── <span class="file">version.php</span>         <span class="note">← Plugin version & metadata</span>
+├── <span class="file">index.php</span>           <span class="note">← Main dashboard page (PHP + HTML)</span>
+└── <span class="dir">lang/</span>
+    └── <span class="dir">en/</span>
+        └── <span class="file">local_moellim_dashboard.php</span>   <span class="note">← Language strings</span>
+  </div>
+
+  <h4>version.php</h4>
+  <pre>&lt;?php
+defined(<span class="str">'MOODLE_INTERNAL'</span>) || die();
+
+$plugin-&gt;component = <span class="str">'local_moellim_dashboard'</span>;
+$plugin-&gt;version   = <span class="num">2026062201</span>;     <span class="comment">// YYYYMMDDNN format</span>
+$plugin-&gt;requires  = <span class="num">2024100700</span>;     <span class="comment">// Minimum Moodle version</span>
+$plugin-&gt;maturity  = MATURITY_STABLE;
+$plugin-&gt;release   = <span class="str">'1.0'</span>;</pre>
+
+  <h4>lang/en/local_moellim_dashboard.php</h4>
+  <pre>&lt;?php
+defined(<span class="str">'MOODLE_INTERNAL'</span>) || die();
+$string[<span class="str">'pluginname'</span>] = <span class="str">'Moellim Dashboard'</span>;</pre>
+
+  <h3>Plugin Installation</h3>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Place plugin files</strong> in <code>public/local/moellim_dashboard/</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Visit</strong> <code>http://moellim/admin/index.php</code> — Moodle detects the new plugin automatically.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Click "Upgrade Moodle database now"</strong> to register the plugin in the database.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 14 – PHP DATA LAYER
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 14 – 15</p>
+  <h2>PHP Data Layer & Frontend</h2>
+
+  <h3>PHP Data Queries (index.php top section)</h3>
+  <pre>&lt;?php
+require_once(<span class="str">'../../config.php'</span>);
+require_once($CFG-&gt;libdir . <span class="str">'/completionlib.php'</span>);  <span class="comment">// Needed for completion_info class</span>
+require_login();
+
+global $DB, $USER, $CFG, $PAGE, $OUTPUT;
+
+$PAGE-&gt;set_url(<span class="kw">new</span> moodle_url(<span class="str">'/local/moellim_dashboard/index.php'</span>));
+$PAGE-&gt;set_context(context_system::instance());
+$PAGE-&gt;set_pagelayout(<span class="str">'base'</span>);
+
+<span class="comment">// Live counts from Moodle database</span>
+$totalStudents = $DB-&gt;count_records(<span class="str">'role_assignments'</span>, [<span class="str">'roleid'</span> =&gt; <span class="num">5</span>]);  <span class="comment">// roleid 5 = student</span>
+$totalTeachers = $DB-&gt;count_records(<span class="str">'role_assignments'</span>, [<span class="str">'roleid'</span> =&gt; <span class="num">3</span>]);  <span class="comment">// roleid 3 = teacher</span>
+$totalCourses  = $DB-&gt;count_records(<span class="str">'course'</span>) - <span class="num">1</span>;              <span class="comment">// -1 to exclude site course</span>
+$totalSurveys  = $DB-&gt;count_records(<span class="str">'feedback'</span>);
+
+<span class="comment">// User role detection</span>
+<span class="kw">if</span> (is_siteadmin()) {
+    $userRole = <span class="str">'admin'</span>;
+} <span class="kw">elseif</span> ($DB-&gt;record_exists(<span class="str">'role_assignments'</span>, [<span class="str">'userid'</span> =&gt; $USER-&gt;id, <span class="str">'roleid'</span> =&gt; <span class="num">3</span>])) {
+    $userRole = <span class="str">'instructor'</span>;
+}
+
+<span class="comment">// Enrolled courses for current user</span>
+$userCourses = enrol_get_my_courses();
+
+<span class="comment">// Pass all data to JavaScript as JSON</span>
+$jsData = json_encode([
+    <span class="str">'stats'</span>   =&gt; [<span class="str">'students'</span> =&gt; $totalStudents, ...],
+    <span class="str">'user'</span>    =&gt; [<span class="str">'name'</span> =&gt; fullname($USER), <span class="str">'role'</span> =&gt; $userRole],
+    <span class="str">'courses'</span> =&gt; $coursesData,
+    <span class="str">'siteurl'</span> =&gt; $CFG-&gt;wwwroot,
+]);</pre>
+
+  <h3>Moodle Role IDs Reference</h3>
+  <table>
+    <tr><th>Role ID</th><th>Role Name</th><th>Used For</th></tr>
+    <tr><td>1</td><td>Manager</td><td>Site management</td></tr>
+    <tr><td>2</td><td>Course Creator</td><td>Create courses</td></tr>
+    <tr><td>3</td><td>Teacher (Editing)</td><td>Full course edit</td></tr>
+    <tr><td>4</td><td>Non-editing Teacher</td><td>Grade only</td></tr>
+    <tr><td>5</td><td>Student</td><td>Course enrollment</td></tr>
+    <tr><td>6</td><td>Guest</td><td>View only</td></tr>
+  </table>
+
+  <h3>Frontend Stack</h3>
+  <p>The dashboard uses a CDN-loaded frontend stack — no build tools or npm required:</p>
+  <table>
+    <tr><th>Library</th><th>Version</th><th>Purpose</th><th>CDN</th></tr>
+    <tr><td>Tailwind CSS</td><td>Latest (Play CDN)</td><td>All styling & layout</td><td>cdn.tailwindcss.com</td></tr>
+    <tr><td>Chart.js</td><td>Latest</td><td>Line + Doughnut charts</td><td>cdn.jsdelivr.net</td></tr>
+    <tr><td>Lucide Icons</td><td>Latest</td><td>Sidebar & UI icons</td><td>unpkg.com</td></tr>
+    <tr><td>Google Fonts Inter</td><td>—</td><td>Typography</td><td>fonts.googleapis.com</td></tr>
+  </table>
+
+  <div class="box box-blue">
+    <div class="box-title">💡 Why Tailwind via CDN, not Moodle's theme CSS?</div>
+    Moodle's HTML purifier strips inline styles and many class names from Text/HTML blocks. Using a local plugin page bypasses the purifier entirely — the page renders raw HTML with full Tailwind support.
+  </div>
+
+  <h3>Tailwind Brand Colors Override</h3>
+  <p>Tailwind's default <code>brand</code> color is overridden to Riphah University green (<code>#00703C</code>):</p>
+  <pre>tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                brand: {
+                    <span class="num">50</span>:  <span class="str">'#f0fdf4'</span>,
+                    <span class="num">600</span>: <span class="str">'#00703C'</span>,   <span class="comment">// Riphah green</span>
+                    <span class="num">700</span>: <span class="str">'#15803d'</span>,
+                }
+            }
+        }
+    }
+}</pre>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 16 – REDIRECT
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 16</p>
+  <h2>Default Dashboard Redirect</h2>
+
+  <h3>Making the Custom Dashboard the Default</h3>
+  <p>When a user logs into Moodle, they are sent to <code>/my/</code> (Moodle's default dashboard). We redirect that to our custom plugin page using <code>.htaccess</code>.</p>
+
+  <p>File: <code>C:\xampp_moodle\htdocs\moellim\public\.htaccess</code></p>
+  <pre>Options -Indexes
+
+RewriteEngine On
+
+<span class="comment"># Redirect Moodle default dashboard to custom dashboard</span>
+RewriteRule <span class="fn">^my/$</span>  /local/moellim_dashboard/index.php [R=302,L]
+RewriteRule <span class="fn">^my$</span>   /local/moellim_dashboard/index.php [R=302,L]</pre>
+
+  <h3>Prerequisites for Redirect to Work</h3>
+  <div class="grid-2">
+    <div class="box box-green" style="margin:0">
+      <div class="box-title">✓ mod_rewrite loaded</div>
+      <code>LoadModule rewrite_module modules/mod_rewrite.so</code> must be uncommented in httpd.conf.
+    </div>
+    <div class="box box-green" style="margin:0">
+      <div class="box-title">✓ AllowOverride All</div>
+      The Directory block for htdocs must have <code>AllowOverride All</code> so .htaccess is processed.
+    </div>
+  </div>
+
+  <hr class="divider">
+  <p class="section-label">Section 17</p>
+  <h2>Error Log & Fixes</h2>
+
+  <table>
+    <tr><th>Error</th><th>Root Cause</th><th>Fix Applied</th></tr>
+    <tr>
+      <td><code>config.php not found</code></td>
+      <td>Installer stuck on web server warning</td>
+      <td>Created config.php manually, bypassing installer UI</td>
+    </tr>
+    <tr>
+      <td><code>wwwroot ends in /public</code></td>
+      <td>Moodle rejects /public suffix</td>
+      <td>Set wwwroot to <code>http://moellim</code>, VirtualHost maps to /public</td>
+    </tr>
+    <tr>
+      <td><code>curl extension not loading</code></td>
+      <td>PHP 8.5 needs OpenSSL 3.5.6, Apache has 3.1.3</td>
+      <td>Downgraded to PHP 8.3 (compatible with Apache OpenSSL 3.1.3)</td>
+    </tr>
+    <tr>
+      <td><code>Apache fails to start</code></td>
+      <td>Extra LoadFile for libcrypto/libssl conflicted</td>
+      <td>Removed extra LoadFile — only load php8ts.dll, libpq.dll, libsqlite3.dll</td>
+    </tr>
+    <tr>
+      <td><code>MariaDB version too old</code></td>
+      <td>Moodle 5.2 requires MariaDB 10.11+</td>
+      <td>Upgraded XAMPP's MariaDB from 10.4.32 to 12.3</td>
+    </tr>
+    <tr>
+      <td><code>Database connection failed</code></td>
+      <td>Fresh MariaDB had no data directory</td>
+      <td>Ran mariadb-install-db.exe to initialize data directory</td>
+    </tr>
+    <tr>
+      <td><code>max_input_vars warning</code></td>
+      <td>Default value 1000 too low for Moodle</td>
+      <td>Set <code>max_input_vars = 5000</code> in php.ini</td>
+    </tr>
+    <tr>
+      <td><code>openssl loaded twice</code></td>
+      <td>php.ini had both <code>extension=openssl</code> and <code>extension=php_openssl.dll</code></td>
+      <td>Commented out the duplicate <code>php_openssl.dll</code> line</td>
+    </tr>
+    <tr>
+      <td><code>HTML block strips inline styles</code></td>
+      <td>Moodle HTML purifier removes non-whitelisted CSS</td>
+      <td>Created local plugin page — bypasses purifier entirely</td>
+    </tr>
+    <tr>
+      <td><code>Class "completion_info" not found</code></td>
+      <td>completionlib.php not auto-loaded</td>
+      <td>Added <code>require_once($CFG->libdir . '/completionlib.php')</code></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     SECTION 18 – CHEATSHEET
+═══════════════════════════════════════════════ -->
+<div class="page page-break">
+  <p class="section-label">Section 18</p>
+  <h2>Key File Paths Cheatsheet</h2>
+
+  <table>
+    <tr><th>File</th><th>Purpose</th></tr>
+    <tr><td><code>C:\xampp_moodle\apache\conf\httpd.conf</code></td><td>Main Apache config. Enable mod_rewrite, AllowOverride All.</td></tr>
+    <tr><td><code>C:\xampp_moodle\apache\conf\extra\httpd-vhosts.conf</code></td><td>VirtualHost: maps <code>http://moellim</code> → <code>/moellim/public/</code></td></tr>
+    <tr><td><code>C:\xampp_moodle\apache\conf\extra\httpd-xampp.conf</code></td><td>PHP LoadModule + directory security blocks</td></tr>
+    <tr><td><code>C:\xampp_moodle\php\php.ini</code></td><td>PHP extensions, max_input_vars, extension_dir</td></tr>
+    <tr><td><code>C:\xampp_moodle\mysql\bin\my.ini</code></td><td>MariaDB config (port, charset, datadir)</td></tr>
+    <tr><td><code>C:\xampp_moodle\htdocs\moellim\config.php</code></td><td>Moodle core config (DB, wwwroot, dataroot)</td></tr>
+    <tr><td><code>C:\xampp_moodle\htdocs\moellim\.htaccess</code></td><td>Denies web access to moellim/ parent folder</td></tr>
+    <tr><td><code>C:\xampp_moodle\htdocs\moellim\public\.htaccess</code></td><td>Redirects /my/ to custom dashboard</td></tr>
+    <tr><td><code>C:\xampp_moodle\htdocs\moellim\public\local\moellim_dashboard\index.php</code></td><td>Custom dashboard plugin main page</td></tr>
+    <tr><td><code>C:\xampp_moodle\htdocs\moellim\public\local\moellim_dashboard\version.php</code></td><td>Plugin version metadata</td></tr>
+    <tr><td><code>C:\moellimdata\</code></td><td>Moodle dataroot — file uploads, sessions, cache</td></tr>
+    <tr><td><code>C:\Windows\System32\drivers\etc\hosts</code></td><td>Add: <code>127.0.0.1 moellim</code></td></tr>
+  </table>
+
+  <h3>Key URLs</h3>
+  <table>
+    <tr><th>URL</th><th>Purpose</th></tr>
+    <tr><td><code>http://moellim/</code></td><td>Moodle home page</td></tr>
+    <tr><td><code>http://moellim/admin/index.php</code></td><td>Site administration & plugin install</td></tr>
+    <tr><td><code>http://moellim/local/moellim_dashboard/index.php</code></td><td>Custom dashboard (direct URL)</td></tr>
+    <tr><td><code>http://moellim/my/</code></td><td>Auto-redirects to custom dashboard</td></tr>
+    <tr><td><code>http://localhost/phpmyadmin/</code></td><td>Database management</td></tr>
+  </table>
+
+  <hr class="divider">
+  <p class="section-label">Section 19</p>
+  <h2>QEC Surveys Roadmap</h2>
+  <p>The dashboard is built and working. The next phase is setting up Quality Enhancement Cell (QEC) surveys using Moodle's built-in <strong>Feedback</strong> module.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>Create Departments as Course Categories</strong>
+        Site Admin → Courses → Manage categories → Add categories (e.g. Faculty of Computing, Faculty of Engineering).
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>Create Courses per Department</strong>
+        Each course represents a subject. Add teachers and enroll students.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>Create QEC Feedback Activity</strong>
+        Inside a course → Turn editing on → Add activity → Feedback. Design questions (rating scales, text, multiple choice).
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>View Responses & Analysis</strong>
+        Feedback module provides built-in charts and export to Excel/CSV. Responses are anonymous by default.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <strong>Connect to Dashboard</strong>
+        Update the QEC Surveys tab in <code>local/moellim_dashboard/index.php</code> to list active feedbacks from <code>mdl_feedback</code> table and link to their response pages.
+      </div>
+    </div>
+  </div>
+
+  <div class="box box-green">
+    <div class="box-title">✓ Dashboard Survey Count</div>
+    The "QEC Surveys" stat card on the dashboard already queries <code>SELECT COUNT(*) FROM mdl_feedback</code> live — it will automatically update as you create more surveys.
+  </div>
+
+  <div style="margin-top: 48px; padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <p style="font-size: 11px; color: #9ca3af; margin: 0;">
+      <strong style="color: #374151;">Moellim Dashboard — Developer Documentation</strong><br>
+      Prepared for: Riphah International University MIS &amp; QEC Team &nbsp;|&nbsp; Generated: June 2026<br>
+      Stack: Moodle 5.2 · PHP 8.3 TS · MariaDB 12.3 · Apache 2.4.58 · Windows 10 Pro
+    </p>
+  </div>
+</div>
+
+</body>
+</html>

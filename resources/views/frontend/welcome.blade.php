@@ -247,7 +247,7 @@
         </div>
     </section>
     <!-- Booking Search -->
-    <section data-scroll-index="1" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{asset('assets/img/slider/2.jpg')}}">
+    <section id="booking" data-scroll-index="1" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{asset('assets/img/slider/2.jpg')}}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center mb-15">
@@ -256,33 +256,54 @@
                 </div>
             </div>
             <div class="booking-inner clearfix">
-                <form action="#0" class="form1 brdr clearfix">
+                @include('common.alert')
+
+                @auth
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('myRequests.store') }}" method="POST" class="form1 brdr clearfix booking-form">
+                    @csrf
                     <div class="col2 c3">
                         <div class="select1_wrapper">
-                            <label>Choose Car Type</label>
+                            <label>Choose Car</label>
                             <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Choose Car Type</option>
-                                    <option value="1">All</option>
-                                    <option value="2">Luxury Cars</option>
-                                    <option value="3">Sport Cars</option>
-                                    <option value="4">SUVs</option>
-                                    <option value="5">Convertible</option>
+                                <select class="select2 select" name="car_id" style="width: 100%" required>
+                                    <option value="">Choose Car</option>
+                                    @foreach ($cars as $car)
+                                        <option value="{{ $car->id }}" {{ old('car_id') == $car->id ? 'selected' : '' }}>
+                                            {{ $car->make }} {{ $car->model }} ({{ $car->registration_number }})
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col2 c4">
                         <div class="select1_wrapper">
-                            <label>Pick Up Location</label>
+                            <label>Delivery Type</label>
                             <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Pick Up Location</option>
-                                    <option value="1">Dubai</option>
-                                    <option value="2">Abu Dhabi</option>
-                                    <option value="3">Sharjah</option>
-                                    <option value="4">Alain</option>
+                                <select class="select2 select delivery-type-select" name="delivery_type" style="width: 100%" required>
+                                    <option value="">Choose Delivery Type</option>
+                                    <option value="pickup" {{ old('delivery_type') == 'pickup' ? 'selected' : '' }}>Pickup</option>
+                                    <option value="delivery" {{ old('delivery_type') == 'delivery' ? 'selected' : '' }}>Delivery</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col2 c5 delivery-location-wrapper" style="display: none;">
+                        <div class="input1_wrapper">
+                            <label>Delivery Location (for Delivery only)</label>
+                            <div class="input1_inner">
+                                <input type="text" name="delivery_location" class="form-control input delivery-location-input"
+                                    placeholder="Delivery Location" value="{{ old('delivery_location') }}">
                             </div>
                         </div>
                     </div>
@@ -290,29 +311,17 @@
                         <div class="input1_wrapper">
                             <label>Pick Up Date</label>
                             <div class="input1_inner">
-                                <input type="text" class="form-control input datepicker" placeholder="Pick Up Date" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col2 c5">
-                        <div class="select1_wrapper">
-                            <label>Drop Off Location</label>
-                            <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Drop Off Location</option>
-                                    <option value="1">Alain</option>
-                                    <option value="2">Sharjah</option>
-                                    <option value="3">Abu Dhabi</option>
-                                    <option value="4">Dubai</option>
-                                </select>
+                                <input type="text" name="pickup_date" class="form-control input datepicker"
+                                    placeholder="Pick Up Date" value="{{ old('pickup_date') }}" required>
                             </div>
                         </div>
                     </div>
                     <div class="col1 c2">
                         <div class="input1_wrapper">
-                            <label>Return Date</label>
+                            <label>Drop Date</label>
                             <div class="input1_inner">
-                                <input type="text" class="form-control input datepicker" placeholder="Return Date">
+                                <input type="text" name="drop_date" class="form-control input datepicker"
+                                    placeholder="Drop Date" value="{{ old('drop_date') }}" required>
                             </div>
                         </div>
                     </div>
@@ -320,6 +329,15 @@
                         <button type="submit" class="booking-button">Rent Now</button>
                     </div>
                 </form>
+                @endauth
+
+                @guest
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-warning d-inline-block">
+                        Please <a href="{{ route('login') }}" class="alert-link">login</a> to book a car.
+                    </div>
+                </div>
+                @endguest
             </div>
         </div>
     </section>
@@ -332,144 +350,49 @@
                     <div class="section-title">Luxury <span>Car Fleet</span></div>
                 </div>
             </div>
-            <div class="cars1-carousel owl-theme owl-carousel">
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/7.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Lamborghini Urus</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span> </div>
+            @if ($cars->count())
+                <div class="cars1-carousel owl-theme owl-carousel">
+                    @foreach ($cars as $car)
+                        <div class="item">
+                            <div class="img">
+                                <img src="{{ $car->image ? asset($car->image) : asset('assets/img/slider/11.jpg') }}"
+                                    alt="{{ $car->make }} {{ $car->model }}">
                             </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$750</span><span>/day</span></div>
+                            <div class="con opacity-1">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="title">
+                                            <a href="{{ route('car_details', $car->id) }}">{{ $car->make }} {{ $car->model }}</a>
+                                        </div>
+                                        <div class="details">
+                                            <span><i class="omfi-door"></i> {{ $car->passengers ?? '-' }} Seats</span>
+                                            <span><i class="omfi-transmission"></i> {{ $car->transmission ?? '-' }}</span>
+                                            <span><i class="omfi-luggage"></i> {{ $car->luggage ?? '-' }}</span>
+                                            <span><i class="omfi-age"></i> Age 25</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="book">
+                                            <div>
+                                                <a href="{{ route('car_details', $car->id) }}" class="btn"><span>Details</span></a>
+                                            </div>
+                                            <div>
+                                                <span class="price">${{ rtrim(rtrim(number_format($car->rental_price_per_day, 2), '0'), '.') }}</span><span>/day</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <a href="#0" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                data-car-id="{{ $car->id }}" class="btn"><span>Rent Now</span></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/8.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Aston Martin DBX</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$500</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/9.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Bugatti Mistral W16</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 2 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$800</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/11.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Bentley Bentayga</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$600</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/12.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Rolls Royce Cullinan</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 4 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$900</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/13.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Bentley Continental</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$500</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/14.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">Audi RS7 Sportback</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 2 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$450</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="img"> <img src="{{asset('assets/img/slider/15.jpg')}}" alt=""> </div>
-                    <div class="con opacity-1">
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="title"><a href="#">AUDI Q8</a></div>
-                                <div class="details"> <span><i class="omfi-door"></i> 4 Seats</span> <span><i class="omfi-transmission"></i> Auto</span> <span><i class="omfi-luggage"></i> 3 Bags</span> <span><i class="omfi-age"></i> Age 25</span></div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="book">
-                                    <div><a href="car-details.html" class="btn"><span>Details</span></a></div>
-                                    <div><span class="price">$450</span><span>/day</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @else
+                <div class="text-center text-muted">No cars available right now.</div>
+            @endif
         </div>
     </section>
     <!-- divider line -->
@@ -491,7 +414,7 @@
                                 <h4>Luxury Cars</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -511,7 +434,7 @@
                                 <h4>Sport Cars</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -531,7 +454,7 @@
                                 <h4>SUV</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -551,7 +474,7 @@
                                 <h4>Convertible</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -571,7 +494,7 @@
                                 <h4>Sedan</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -591,7 +514,7 @@
                                 <h4>Small Cars</h4>
                             </div>
                             <div class="curv-butn icon-bg">
-                                <a href="car-details.html" class="vid">
+                                <a href="{{ route('car') }}" class="vid">
                                     <div class="icon"> <i class="ti-arrow-top-right"></i> </div>
                                 </a>
                                 <div class="br-left-top">
@@ -1064,106 +987,4 @@
         </div>
     </section>
 
-    <!-- RentNow Popup -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Booking Form</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="booking-box">
-                        <div class="booking-inner clearfix">
-                            <form method="post" action="#0" class="form1 contact__form clearfix">
-                                <!-- form message -->
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="alert alert-success contact__msg" style="display: none" role="alert"> Your message was sent successfully. </div>
-                                    </div>
-                                </div>
-                                <!-- form elements -->
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-12">
-                                        <input name="name" type="text" placeholder="Full Name *" required>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <input name="email" type="email" placeholder="Email *" required>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <input name="phone" type="text" placeholder="Phone *" required>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="select1_wrapper">
-                                            <label>Choose Car Type</label>
-                                            <div class="select1_inner">
-                                                <select class="select2 select" style="width: 100%">
-                                                    <option value="0">Choose Car Type</option>
-                                                    <option value="1">All</option>
-                                                    <option value="2">Luxury Cars</option>
-                                                    <option value="3">Sport Cars</option>
-                                                    <option value="4">SUVs</option>
-                                                    <option value="5">Convertible</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="select1_wrapper">
-                                            <label>Pick Up Location</label>
-                                            <div class="select1_inner">
-                                                <select class="select2 select" style="width: 100%">
-                                                    <option value="0">Pick Up Location</option>
-                                                    <option value="1">Dubai</option>
-                                                    <option value="2">Abu Dhabi</option>
-                                                    <option value="3">Sharjah</option>
-                                                    <option value="4">Alain</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="input1_wrapper">
-                                            <label>Pick Up Date</label>
-                                            <div class="input1_inner">
-                                                <input type="text" class="form-control input datepicker" placeholder="Pick Up Date" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="select1_wrapper">
-                                            <label>Drop Off Location</label>
-                                            <div class="select1_inner">
-                                                <select class="select2 select" style="width: 100%">
-                                                    <option value="0">Drop Off Location</option>
-                                                    <option value="1">Alain</option>
-                                                    <option value="2">Sharjah</option>
-                                                    <option value="3">Abu Dhabi</option>
-                                                    <option value="4">Dubai</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <div class="input1_wrapper">
-                                            <label>Return Date</label>
-                                            <div class="input1_inner">
-                                                <input type="text" class="form-control input datepicker" placeholder="Return Date">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 form-group">
-                                        <textarea name="message" id="message" cols="30" rows="4" placeholder="Additional Note"></textarea>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12">
-                                        <button type="submit" class="booking-button mt-15">Rent Now</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection

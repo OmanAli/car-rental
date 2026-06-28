@@ -30,6 +30,7 @@
     </div>
     @include('frontend.layouts.navbar')
     @yield('content')
+    @include('frontend.partials.rent_modal')
     @include('frontend.layouts.footer')
     <!-- jQuery -->
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>

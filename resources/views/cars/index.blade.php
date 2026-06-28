@@ -20,19 +20,28 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th width="8%">Image</th>
                                 <th width="10%">Make</th>
                                 <th width="10%">Model</th>
-                                <th width="10%">Year</th>
-                                <th width="20%">Registration Number</th>
+                                <th width="8%">Year</th>
+                                <th width="15%">Registration Number</th>
                                 <th width="10%">Type</th>
                                 <th width="10%">Status</th>
-                                <th width="20%">Rent(Per Day)</th>
-                                <th width="10%">Action</th>
+                                <th width="14%">Rent(Per Day)</th>
+                                <th width="15%">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($cars as $item)
                                 <tr>
+                                    <td>
+                                        @if ($item->image)
+                                            <img src="{{ asset($item->image) }}" alt=""
+                                                style="height:48px;width:72px;object-fit:cover;border-radius:4px;">
+                                        @else
+                                            <span class="text-muted small">No image</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $item->make }}</td>
                                     <td>{{ $item->model }}</td>
                                     <td>{{ $item->year }}</td>

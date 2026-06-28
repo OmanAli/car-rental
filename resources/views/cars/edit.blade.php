@@ -16,7 +16,7 @@
         {{-- Page Content --}}
         <div class="row">
             <div class="col-md-12 border-right">
-                <form method="POST" action="{{ route('cars.update', $car->id) }}">
+                <form method="POST" enctype="multipart/form-data" action="{{ route('cars.update', $car->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="card-body">
@@ -115,6 +115,91 @@
                                 </select>
 
                                 @error('status')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Doors --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Doors</label>
+                                <input type="number" min="1"
+                                    class="form-control form-control-contact @error('doors') is-invalid @enderror"
+                                    placeholder="4" name="doors" value="{{ old('doors', $car->doors) }}" required>
+
+                                @error('doors')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Passengers --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Passengers</label>
+                                <input type="number" min="1"
+                                    class="form-control form-control-contact @error('passengers') is-invalid @enderror"
+                                    placeholder="5" name="passengers" value="{{ old('passengers', $car->passengers) }}" required>
+
+                                @error('passengers')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Transmission --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Transmission</label>
+                                <select name="transmission"
+                                    class="form-control form-control-contact @error('transmission') is-invalid @enderror" required>
+                                    <option value="" disabled>--Transmission--</option>
+                                    <option value="Auto" {{ old('transmission', $car->transmission) == 'Auto' ? 'selected' : '' }}>Auto</option>
+                                    <option value="Manual" {{ old('transmission', $car->transmission) == 'Manual' ? 'selected' : '' }}>Manual</option>
+                                </select>
+
+                                @error('transmission')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Luggage --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Luggage</label>
+                                <input type="text"
+                                    class="form-control form-control-contact @error('luggage') is-invalid @enderror"
+                                    placeholder="2 Bags" name="luggage" value="{{ old('luggage', $car->luggage) }}" required>
+
+                                @error('luggage')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Air Condition --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Air Condition</label>
+                                <select name="air_condition"
+                                    class="form-control form-control-contact @error('air_condition') is-invalid @enderror" required>
+                                    <option value="" disabled>--Air Condition--</option>
+                                    <option value="1" {{ (string) old('air_condition', $car->air_condition) === '1' ? 'selected' : '' }}>Yes</option>
+                                    <option value="0" {{ (string) old('air_condition', $car->air_condition) === '0' ? 'selected' : '' }}>No</option>
+                                </select>
+
+                                @error('air_condition')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Image --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <label>Car Image</label>
+                                @if ($car->image)
+                                    <div class="mb-2">
+                                        <img src="{{ asset($car->image) }}" alt="Car"
+                                            style="max-height:80px;border-radius:4px;">
+                                    </div>
+                                @endif
+                                <input type="file" accept="image/*"
+                                    class="form-control form-control-contact @error('image') is-invalid @enderror"
+                                    name="image">
+                                <small class="text-muted">Leave empty to keep current. JPG, PNG or WEBP. Max 4MB.</small>
+
+                                @error('image')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

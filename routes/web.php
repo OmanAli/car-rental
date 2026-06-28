@@ -9,14 +9,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MyRequestsController;
 
-Route::get('/', function () {
-    return view('frontend.welcome');
-});
+Route::get('/', [App\Http\Controllers\FrontEndController::class, 'welcome'])->name('welcome');
 Route::get('/about', [App\Http\Controllers\FrontEndController::class, 'about'])->name('about');
 Route::get('/services', [App\Http\Controllers\FrontEndController::class, 'services'])->name('services');
 Route::get('/service-details', [App\Http\Controllers\FrontEndController::class, 'service_details'])->name('service_details');
 Route::get('/car', [App\Http\Controllers\FrontEndController::class, 'cars'])->name('car');
-Route::get('/car-details', [App\Http\Controllers\FrontEndController::class, 'car_details'])->name('car_details');
+Route::get('/car-details/{car}', [App\Http\Controllers\FrontEndController::class, 'car_details'])->name('car_details');
 Route::get('/contact', [App\Http\Controllers\FrontEndController::class, 'contact'])->name('contact');
 
 Auth::routes();
@@ -54,6 +52,7 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 // My Requests (Customer)
 Route::prefix('my-requests')->name('myRequests.')->middleware('auth')->group(function () {
     Route::get('/', [MyRequestsController::class, 'index'])->name('index');
+    Route::post('/store', [MyRequestsController::class, 'store'])->name('store');
 });
 
 // Rent Detail Routes

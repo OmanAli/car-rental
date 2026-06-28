@@ -218,7 +218,7 @@
         </div>
     </section>
     <!-- Booking Search -->
-    <section class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{asset('assets/img/slider/2.jpg')}}">
+    <section id="booking" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{asset('assets/img/slider/2.jpg')}}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center mb-15">
@@ -227,33 +227,54 @@
                 </div>
             </div>
             <div class="booking-inner clearfix">
-                <form action="#0" class="form1 brdr clearfix">
+                @include('common.alert')
+
+                @auth
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('myRequests.store') }}" method="POST" class="form1 brdr clearfix booking-form">
+                    @csrf
                     <div class="col2 c3">
                         <div class="select1_wrapper">
-                            <label>Choose Car Type</label>
+                            <label>Choose Car</label>
                             <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Choose Car Type</option>
-                                    <option value="1">All</option>
-                                    <option value="2">Luxury Cars</option>
-                                    <option value="3">Sport Cars</option>
-                                    <option value="4">SUVs</option>
-                                    <option value="5">Convertible</option>
+                                <select class="select2 select" name="car_id" style="width: 100%" required>
+                                    <option value="">Choose Car</option>
+                                    @foreach ($cars as $car)
+                                        <option value="{{ $car->id }}" {{ old('car_id') == $car->id ? 'selected' : '' }}>
+                                            {{ $car->make }} {{ $car->model }} ({{ $car->registration_number }})
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col2 c4">
                         <div class="select1_wrapper">
-                            <label>Pick Up Location</label>
+                            <label>Delivery Type</label>
                             <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Pick Up Location</option>
-                                    <option value="1">Dubai</option>
-                                    <option value="2">Abu Dhabi</option>
-                                    <option value="3">Sharjah</option>
-                                    <option value="4">Alain</option>
+                                <select class="select2 select delivery-type-select" name="delivery_type" style="width: 100%" required>
+                                    <option value="">Choose Delivery Type</option>
+                                    <option value="pickup" {{ old('delivery_type') == 'pickup' ? 'selected' : '' }}>Pickup</option>
+                                    <option value="delivery" {{ old('delivery_type') == 'delivery' ? 'selected' : '' }}>Delivery</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col2 c5 delivery-location-wrapper" style="display: none;">
+                        <div class="input1_wrapper">
+                            <label>Delivery Location (for Delivery only)</label>
+                            <div class="input1_inner">
+                                <input type="text" name="delivery_location" class="form-control input delivery-location-input"
+                                    placeholder="Delivery Location" value="{{ old('delivery_location') }}">
                             </div>
                         </div>
                     </div>
@@ -261,30 +282,17 @@
                         <div class="input1_wrapper">
                             <label>Pick Up Date</label>
                             <div class="input1_inner">
-                                <input type="text" class="form-control input datepicker" placeholder="Pick Up Date"
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col2 c5">
-                        <div class="select1_wrapper">
-                            <label>Drop Off Location</label>
-                            <div class="select1_inner">
-                                <select class="select2 select" style="width: 100%">
-                                    <option value="0">Drop Off Location</option>
-                                    <option value="1">Alain</option>
-                                    <option value="2">Sharjah</option>
-                                    <option value="3">Abu Dhabi</option>
-                                    <option value="4">Dubai</option>
-                                </select>
+                                <input type="text" name="pickup_date" class="form-control input datepicker"
+                                    placeholder="Pick Up Date" value="{{ old('pickup_date') }}" required>
                             </div>
                         </div>
                     </div>
                     <div class="col1 c2">
                         <div class="input1_wrapper">
-                            <label>Return Date</label>
+                            <label>Drop Date</label>
                             <div class="input1_inner">
-                                <input type="text" class="form-control input datepicker" placeholder="Return Date">
+                                <input type="text" name="drop_date" class="form-control input datepicker"
+                                    placeholder="Drop Date" value="{{ old('drop_date') }}" required>
                             </div>
                         </div>
                     </div>
@@ -292,6 +300,15 @@
                         <button type="submit" class="booking-button">Rent Now</button>
                     </div>
                 </form>
+                @endauth
+
+                @guest
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-warning d-inline-block">
+                        Please <a href="{{ route('login') }}" class="alert-link">login</a> to book a car.
+                    </div>
+                </div>
+                @endguest
             </div>
         </div>
     </section>
@@ -452,4 +469,5 @@
             </div>
         </div>
     </section>
+
 @endsection

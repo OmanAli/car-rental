@@ -29,6 +29,32 @@
                             <h5><a href="tel:702-336-8078">702-336-8078</a></h5>
                         </div>
                     </div>
+                    @auth
+                        <div class="dropdown ms-3">
+                            <a class="btn btn-dark dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-user"></i> {{ auth()->user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('home') }}">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile.detail') }}">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endauth
+                    @guest
+                        <a href="{{ route('login') }}" class="btn btn-dark ms-3 me-2">Login</a>
+                        <a href="{{ route('register') }}" class="btn btn-light border">Register</a>
+                    @endguest
                 </div>
             </div>
         </div>
