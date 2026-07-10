@@ -34,16 +34,18 @@ class HomeController extends Controller
         $pendingRequests = 0;
 
         if (auth()->user()->hasRole('admin')) {
-            $monthlyRevenue = RentDetail::where('status', 'approved')
+            $monthlyRevenue = RentDetail::with('car')
+                ->where('status', 'approved')
                 ->whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
                 ->get()
-                ->sum(fn($r) => $r->car->rental_price_per_day * now()->parse($r->pickup_date)->diffInDays($r->drop_date));
+                ->sum->amount;
 
-            $annualRevenue = RentDetail::where('status', 'approved')
+            $annualRevenue = RentDetail::with('car')
+                ->where('status', 'approved')
                 ->whereYear('created_at', now()->year)
                 ->get()
-                ->sum(fn($r) => $r->car->rental_price_per_day * now()->parse($r->pickup_date)->diffInDays($r->drop_date));
+                ->sum->amount;
 
             $rentedCars      = Car::where('status', 2)->count();
             $pendingRequests = RentDetail::where('status', 'pending')->count();

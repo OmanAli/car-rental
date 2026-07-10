@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\Admin\RentDetailController;
+use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +62,17 @@ Route::prefix('rent-requests')->name('rentDetails.')->middleware('auth')->group(
     Route::get('/', [RentDetailController::class, 'index'])->name('index');
     Route::post('/{id}/approve', [RentDetailController::class, 'approve'])->name('approve');
     Route::post('/{id}/reject', [RentDetailController::class, 'reject'])->name('reject');
+});
+
+// Transactions (Admin)
+Route::prefix('transactions')->name('transactions.')->middleware('auth')->group(function () {
+    Route::get('/', [TransactionController::class, 'index'])->name('index');
+});
+
+// Site Settings (Admin)
+Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
+    Route::get('/', [SiteSettingController::class, 'index'])->name('index');
+    Route::post('/{page}/update', [SiteSettingController::class, 'update'])->name('update');
 });
 
 // Car Routes

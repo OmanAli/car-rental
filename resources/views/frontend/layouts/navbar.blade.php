@@ -3,7 +3,7 @@
         <div class="container">
             <!-- Logo -->
             <div class="logo-wrapper">
-                <a class="logo" href="#"> <img src="{{ asset('assets/Logo_t.png') }}" class="logo-img"
+                <a class="logo" href="{{ url('/') }}"> <img src="{{ setting_image('global.navbar.logo') }}" class="logo-img"
                         alt=""> </a>
                 <!--<a class="logo" href="{{url('/')}}"><h2>Midnight<span>Lux</span></h2></a>-->
             </div>
@@ -25,8 +25,8 @@
                     <div class="wrap">
                         <div class="icon"> <i class="flaticon-phone-call"></i> </div>
                         <div class="text">
-                            <p>Need help?</p>
-                            <h5><a href="tel:702-336-8078">702-336-8078</a></h5>
+                            <p>{{ setting('global.navbar.help_text') }}</p>
+                            <h5><a href="tel:{{ setting('global.navbar.phone') }}">{{ setting('global.navbar.phone') }}</a></h5>
                         </div>
                     </div>
                     @auth

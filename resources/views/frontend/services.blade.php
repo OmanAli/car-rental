@@ -4,13 +4,13 @@
 
 @section('content')
     <!-- Header Banner -->
-    <section class="banner-header section-padding bg-img" data-overlay-dark="5" data-background="{{asset('assets/img/slider/11.jpg')}}">
+    <section class="banner-header section-padding bg-img" data-overlay-dark="5" data-background="{{ setting_image('services.banner.image') }}">
         <div class="v-middle">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h6>What We Do</h6>
-                        <h1>Our <span>Services</span></h1>
+                        <h6>{{ setting('services.banner.subtitle') }}</h6>
+                        <h1>{{ setting('services.banner.title') }} <span>{{ setting('services.banner.title_colored') }}</span></h1>
                     </div>
                 </div>
             </div>
@@ -22,208 +22,49 @@
     <section class="services1 section-padding">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Corporate Car Rental</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
+                @for ($i = 1; $i <= 6; $i++)
+                    <div class="col-lg-4 col-md-6 mb-45">
+                        <div class="item">
+                            <div class="text">
+                                <h5>{{ setting("shared.services.item{$i}_title") }}</h5>
+                                <p>{{ setting("shared.services.item{$i}_text") }}</p>
+                            </div>
+                            <div class="numb">
+                                <div class="numb-curv">
+                                    <a href="{{ route('service_details') }}">
+                                        <div class="number"><i class="ti-arrow-top-right"></i></div>
+                                    </a>
+                                    <div class="shap-left-top">
+                                        <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-11 h-11">
+                                            <path
+                                                d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="shap-right-bottom">
+                                        <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-11 h-11">
+                                            <path
+                                                d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Car Rental with Driver</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Airport Transfer</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Fleet Leasing</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>VIP Transfer</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-45">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Private Transfer</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <a href="{{route('service_details')}}">
-                                    <div class="number"><i class="ti-arrow-top-right"></i></div>
-                                </a>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endfor
             </div>
         </div>
     </section>
     <!-- Booking Search -->
-    <section id="booking" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{asset('assets/img/slider/2.jpg')}}">
+    <section id="booking" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{ setting_image('services.booking.background') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center mb-15">
-                    <div class="section-subtitle">Rent Now</div>
-                    <div class="section-title white">Book Auto Rental</div>
+                    <div class="section-subtitle">{{ setting('services.booking.subtitle') }}</div>
+                    <div class="section-title white">{{ setting('services.booking.title') }}</div>
                 </div>
             </div>
             <div class="booking-inner clearfix">
@@ -317,157 +158,46 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 text-center mb-30">
-                    <div class="section-subtitle">What We Do</div>
-                    <div class="section-title">Other Services</div>
+                    <div class="section-subtitle">{{ setting('services.other.subtitle') }}</div>
+                    <div class="section-title">{{ setting('services.other.title') }}</div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6 mb-30">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Daily Car Rental</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <div class="number">01.</div>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
+                @for ($i = 1; $i <= 3; $i++)
+                    <div class="col-lg-4 col-md-6 mb-30">
+                        <div class="item">
+                            <div class="text">
+                                <h5>{{ setting("services.other.item{$i}_title") }}</h5>
+                                <p>{{ setting("services.other.item{$i}_text") }}</p>
+                            </div>
+                            <div class="numb">
+                                <div class="numb-curv">
+                                    <div class="number">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}.</div>
+                                    <div class="shap-left-top">
+                                        <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-11 h-11">
+                                            <path
+                                                d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="shap-right-bottom">
+                                        <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            class="w-11 h-11">
+                                            <path
+                                                d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
+                                                fill="#ffffff"></path>
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-30">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Monthly Car Rental</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <div class="number">02.</div>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-30">
-                    <div class="item">
-                        <div class="text">
-                            <h5>Annual Car Rental</h5>
-                            <p>Lorem ipsum dolor sit amet the consectetur adipiscing elit entesque hendrerit elit nisan
-                                lacinia feugiat nunc eu aucton.</p>
-                        </div>
-                        <div class="numb">
-                            <div class="numb-curv">
-                                <div class="number">03.</div>
-                                <div class="shap-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="shap-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                        class="w-11 h-11">
-                                        <path
-                                            d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z"
-                                            fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endfor
             </div>
         </div>
     </section>
-    <!-- Video -->
-    <section class="video-wrapper video section-padding bg-img bg-fixed" data-overlay-dark="4"
-        data-background="{{asset('assets/img/slider/1.jpg')}}">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-subtitle">Explore</div>
-                    <div class="section-title white">Car <span>Promo</span> Video</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="text-center col-md-12">
-                    <a class="vid" href="https://youtu.be/1LxcTt1adfY">
-                        <div class="vid-butn"> <span class="icon"> <i class="ti-control-play"></i> </span> </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Clients -->
-    <section class="clients">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="owl-carousel owl-theme">
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/1.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/2.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/3.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/4.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/5.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/6.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/7.png')}}" alt=""></a>
-                        </div>
-                        <div class="clients-logo">
-                            <a href="#0"><img src="{{asset('assets/img/clients/8.png')}}" alt=""></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    @include('frontend.partials.video_promo')
+    @include('frontend.partials.clients')
 
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class RentDetail extends Model
@@ -24,5 +25,21 @@ class RentDetail extends Model
     public function car()
     {
         return $this->belongsTo(Car::class);
+    }
+
+    /**
+     * Billable rental days (same-day rentals count as 1 day).
+     */
+    public function getDaysAttribute(): int
+    {
+        return max(1, Carbon::parse($this->pickup_date)->diffInDays($this->drop_date));
+    }
+
+    /**
+     * Revenue for this rental (rate per day x days).
+     */
+    public function getAmountAttribute(): float
+    {
+        return $this->car ? (float) $this->car->rental_price_per_day * $this->days : 0.0;
     }
 }

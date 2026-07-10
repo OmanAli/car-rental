@@ -87,6 +87,26 @@
              <span>Rent Requests</span>
          </a>
      </li>
+
+     <li class="nav-item">
+         <a class="nav-link" href="{{ route('transactions.index') }}">
+             <i class="fas fa-fw fa-money-bill-wave"></i>
+             <span>Transactions</span>
+         </a>
+     </li>
+
+     <hr class="sidebar-divider">
+
+     <div class="sidebar-heading">
+         Website
+     </div>
+
+     <li class="nav-item">
+         <a class="nav-link" href="{{ route('settings.index') }}">
+             <i class="fas fa-fw fa-cog"></i>
+             <span>Site Settings</span>
+         </a>
+     </li>
      @endif
 
      @if (auth()->user()->hasRole('customer'))
