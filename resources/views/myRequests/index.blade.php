@@ -27,6 +27,9 @@
                                 <th>Drop Date</th>
                                 <th>Delivery</th>
                                 <th>Location</th>
+                                <th>Discount</th>
+                                <th>Original Rent</th>
+                                <th>Rent After Discount</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -46,6 +49,28 @@
                                         @endif
                                     </td>
                                     <td>{{ $item->delivery_location ?? '—' }}</td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <span class="badge badge-info">{{ $item->discount_type }}</span>
+                                            <small class="d-block text-muted">{{ $item->discount_reference }}</small>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <span class="text-muted" style="text-decoration: line-through;">${{ number_format($item->amount, 2) }}</span>
+                                        @else
+                                            ${{ number_format($item->amount, 2) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <strong class="text-success">${{ number_format($item->discounted_amount, 2) }}</strong>
+                                        @else
+                                            ${{ number_format($item->discounted_amount, 2) }}
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($item->status === 'pending')
                                             <span class="badge badge-warning">Pending</span>

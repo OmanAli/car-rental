@@ -140,6 +140,7 @@
 
                 <form action="{{ route('myRequests.store') }}" method="POST" class="form1 brdr clearfix booking-form">
                     @csrf
+                    <input type="hidden" name="booking_source" value="home">
                     <div class="col2 c3">
                         <div class="select1_wrapper">
                             <label>Choose Car</label>
@@ -167,12 +168,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col2 c5 delivery-location-wrapper" style="display: none;">
+                    <div class="col2 c5 delivery-location-wrapper" data-static-toggle>
                         <div class="input1_wrapper">
                             <label>Delivery Location (for Delivery only)</label>
                             <div class="input1_inner">
                                 <input type="text" name="delivery_location" class="form-control input delivery-location-input"
-                                    placeholder="Delivery Location" value="{{ old('delivery_location') }}">
+                                    placeholder="Delivery Location" value="{{ old('delivery_location') }}"
+                                    {{ old('delivery_type') === 'delivery' ? 'required' : 'disabled' }}>
                             </div>
                         </div>
                     </div>
@@ -194,8 +196,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col3 c6">
-                        <button type="submit" class="booking-button">Rent Now</button>
+                    <div style="clear: both; width: 100%; padding: 15px 15px 0; border-top: 1px solid #f2f2f2;">
+                        <small class="d-block" style="color: #888; font-size: 12px; margin-bottom: 8px;">Have a
+                            discount coupon or veteran ID? Enter one below (only one can be used per booking).</small>
+                        <div class="d-flex align-items-start flex-wrap" style="gap: 15px;">
+                            <div class="input1_wrapper" style="max-width: 220px; margin-bottom: 0; flex: 0 1 220px;">
+                                <div class="input1_inner">
+                                    <input type="text" name="coupon_code"
+                                        class="form-control input discount-input @error('coupon_code') is-invalid @enderror"
+                                        placeholder="Coupon Code" style="text-transform: uppercase;"
+                                        value="{{ old('coupon_code') }}">
+                                </div>
+                            </div>
+                            <div class="input1_wrapper" style="max-width: 220px; margin-bottom: 0; flex: 0 1 220px;">
+                                <div class="input1_inner">
+                                    <input type="text" name="veteran_id"
+                                        class="form-control input discount-input @error('veteran_id') is-invalid @enderror"
+                                        placeholder="Veteran ID" value="{{ old('veteran_id') }}">
+                                </div>
+                            </div>
+                            <button type="submit" class="booking-button"
+                                style="display: inline-block; width: auto; min-width: 180px; padding: 0 40px; flex: 0 0 auto;">Rent
+                                Now</button>
+                        </div>
                     </div>
                 </form>
                 @endauth

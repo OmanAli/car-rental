@@ -78,6 +78,33 @@
      <hr class="sidebar-divider">
 
      <div class="sidebar-heading">
+         Promotions
+     </div>
+
+     <li class="nav-item">
+         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCoupons"
+             aria-expanded="true" aria-controls="collapseCoupons">
+            <i class="fas fa-fw fa-tags"></i>
+            <span>Coupons</span>
+         </a>
+         <div id="collapseCoupons" class="collapse" aria-labelledby="headingCoupons" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <a class="collapse-item" href="{{ route('coupons.index') }}">Index</a>
+                 <a class="collapse-item" href="{{ route('coupons.create') }}">Add</a>
+             </div>
+         </div>
+     </li>
+
+     <li class="nav-item">
+         <a class="nav-link" href="{{ route('veteranDiscounts.index') }}">
+            <i class="fas fa-fw fa-medal"></i>
+            <span>Veteran Discount</span>
+         </a>
+     </li>
+
+     <hr class="sidebar-divider">
+
+     <div class="sidebar-heading">
          Rentals
      </div>
 

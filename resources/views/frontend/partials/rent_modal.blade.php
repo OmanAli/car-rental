@@ -13,6 +13,7 @@
                             <form method="POST" action="{{ route('myRequests.store') }}"
                                 class="form1 contact__form clearfix booking-form">
                                 @csrf
+                                <input type="hidden" name="booking_source" value="modal">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-12">
                                         <div class="select1_wrapper">
@@ -75,6 +76,33 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="input1_wrapper">
+                                            <label>Coupon Code</label>
+                                            <div class="input1_inner">
+                                                <input type="text" name="coupon_code"
+                                                    class="form-control input discount-input @error('coupon_code') is-invalid @enderror"
+                                                    placeholder="Coupon Code" style="text-transform: uppercase;"
+                                                    value="{{ old('coupon_code') }}">
+                                            </div>
+                                            @error('coupon_code')
+                                                <div class="text-danger mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                        <div class="input1_wrapper">
+                                            <label>Veteran ID</label>
+                                            <div class="input1_inner">
+                                                <input type="text" name="veteran_id"
+                                                    class="form-control input discount-input @error('veteran_id') is-invalid @enderror"
+                                                    placeholder="Veteran ID" value="{{ old('veteran_id') }}">
+                                            </div>
+                                            @error('veteran_id')
+                                                <div class="text-danger mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-lg-12 col-md-12">
                                         <button type="submit" class="booking-button mt-15">Rent Now</button>
                                     </div>
@@ -112,6 +140,11 @@
         background-image: none !important;
         padding-right: 15px !important;
     }
+    .delivery-location-wrapper .delivery-location-input:disabled {
+        background-color: #f5f5f5 !important;
+        color: #aaa !important;
+        cursor: not-allowed;
+    }
 </style>
 
 <script>
@@ -123,8 +156,15 @@
             var locInput   = form.querySelector('.delivery-location-input');
             if (!typeSelect || !wrapper || !locInput) return;
 
+            var staticToggle = wrapper.hasAttribute('data-static-toggle');
+
             function toggleLocation() {
-                if (typeSelect.value === 'delivery') {
+                var isDelivery = typeSelect.value === 'delivery';
+                if (staticToggle) {
+                    locInput.disabled = !isDelivery;
+                    locInput.required = isDelivery;
+                    if (!isDelivery) { locInput.value = ''; }
+                } else if (isDelivery) {
                     wrapper.style.display = '';
                     locInput.required = true;
                 } else {
@@ -136,6 +176,24 @@
             typeSelect.addEventListener('change', toggleLocation);
             if (window.jQuery) { jQuery(typeSelect).on('change', toggleLocation); }
             toggleLocation();
+        });
+
+        // Coupon code and Veteran ID are mutually exclusive — using one disables the other
+        document.querySelectorAll('.booking-form').forEach(function (form) {
+            var discountInputs = form.querySelectorAll('.discount-input');
+            if (discountInputs.length < 2) return;
+
+            function syncDiscountInputs(e) {
+                var active = e.target;
+                discountInputs.forEach(function (input) {
+                    if (input === active) return;
+                    input.disabled = active.value.trim().length > 0;
+                    if (input.disabled) { input.value = ''; }
+                });
+            }
+            discountInputs.forEach(function (input) {
+                input.addEventListener('input', syncDiscountInputs);
+            });
         });
 
         // Auto-scroll to booking section after submit
@@ -162,5 +220,11 @@
                 }
             });
         }
+
+        @if (old('booking_source') === 'modal' && ($errors->has('coupon_code') || $errors->has('veteran_id') || $errors->has('car_id') || $errors->has('pickup_date') || $errors->has('drop_date') || $errors->has('delivery_type') || $errors->has('delivery_location')))
+            if (modal && window.bootstrap) {
+                new bootstrap.Modal(modal).show();
+            }
+        @endif
     });
 </script>

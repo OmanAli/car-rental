@@ -6,8 +6,8 @@
         $('#dataTable').DataTable({
             destroy: true,
             columnDefs: [
-                { orderable: false, searchable: false, targets: [9] },
-                { orderable: false, targets: [8] },
+                { orderable: false, searchable: false, targets: [10] },
+                { orderable: false, targets: [9] },
             ]
         });
     });
@@ -42,6 +42,7 @@
                                 <th>Drop Date</th>
                                 <th>Delivery</th>
                                 <th>Location</th>
+                                <th>Discount</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -63,6 +64,14 @@
                                         @endif
                                     </td>
                                     <td>{{ $item->delivery_location ?? '—' }}</td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <span class="badge badge-info">{{ $item->discount_type }}</span>
+                                            <small class="d-block text-muted">{{ $item->discount_reference }}</small>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($item->status === 'pending')
                                             <span class="badge badge-warning">Pending</span>

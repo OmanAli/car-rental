@@ -16,16 +16,16 @@ class TransactionController extends Controller
         $period = $request->query('period', 'daily');
         abort_unless(in_array($period, self::PERIODS), 404);
 
-        $transactions = RentDetail::with(['user', 'car.carType'])
+        $transactions = RentDetail::with(['user', 'car.carType', 'coupon'])
             ->where('status', 'approved')
             ->latest()
             ->get();
 
         $summary = [
-            'today' => $transactions->filter(fn ($t) => $t->created_at->isToday())->sum->amount,
-            'week'  => $transactions->filter(fn ($t) => $t->created_at->gte(now()->startOfWeek()))->sum->amount,
-            'month' => $transactions->filter(fn ($t) => $t->created_at->isCurrentMonth())->sum->amount,
-            'year'  => $transactions->filter(fn ($t) => $t->created_at->isCurrentYear())->sum->amount,
+            'today' => $transactions->filter(fn ($t) => $t->created_at->isToday())->sum->discounted_amount,
+            'week'  => $transactions->filter(fn ($t) => $t->created_at->gte(now()->startOfWeek()))->sum->discounted_amount,
+            'month' => $transactions->filter(fn ($t) => $t->created_at->isCurrentMonth())->sum->discounted_amount,
+            'year'  => $transactions->filter(fn ($t) => $t->created_at->isCurrentYear())->sum->discounted_amount,
         ];
 
         $breakdown = $transactions
@@ -34,7 +34,7 @@ class TransactionController extends Controller
             ->map(fn ($group, $key) => [
                 'label'   => $this->periodLabel($key, $period),
                 'count'   => $group->count(),
-                'revenue' => $group->sum->amount,
+                'revenue' => $group->sum->discounted_amount,
             ]);
 
         return view('transactions.index', compact('transactions', 'summary', 'breakdown', 'period'));

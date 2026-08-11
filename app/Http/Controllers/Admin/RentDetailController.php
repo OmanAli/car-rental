@@ -11,7 +11,7 @@ class RentDetailController extends Controller
 {
     public function index()
     {
-        $requests = RentDetail::with(['user', 'car.carType'])->latest()->get();
+        $requests = RentDetail::with(['user', 'car.carType', 'coupon'])->latest()->get();
         return view('rentDetails.index', compact('requests'));
     }
 

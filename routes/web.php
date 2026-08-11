@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CarTypeController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RentDetailController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VeteranDiscountController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -73,6 +75,23 @@ Route::prefix('transactions')->name('transactions.')->middleware('auth')->group(
 Route::prefix('settings')->name('settings.')->middleware('auth')->group(function () {
     Route::get('/', [SiteSettingController::class, 'index'])->name('index');
     Route::post('/{page}/update', [SiteSettingController::class, 'update'])->name('update');
+});
+
+// Coupons (Admin)
+Route::prefix('coupons')->name('coupons.')->middleware('auth')->group(function () {
+    Route::get('/', [CouponController::class, 'index'])->name('index');
+    Route::get('/create', [CouponController::class, 'create'])->name('create');
+    Route::post('/store', [CouponController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [CouponController::class, 'edit'])->name('edit');
+    Route::put('/{id}/update', [CouponController::class, 'update'])->name('update');
+    Route::post('/{id}/disable', [CouponController::class, 'disable'])->name('disable');
+    Route::post('/{id}/enable', [CouponController::class, 'enable'])->name('enable');
+});
+
+// Veteran Discount (Admin) — a single global percentage, not a per-ID list
+Route::prefix('veteran-discounts')->name('veteranDiscounts.')->middleware('auth')->group(function () {
+    Route::get('/', [VeteranDiscountController::class, 'index'])->name('index');
+    Route::post('/update', [VeteranDiscountController::class, 'update'])->name('update');
 });
 
 // Car Routes

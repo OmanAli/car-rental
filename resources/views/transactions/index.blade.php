@@ -133,7 +133,7 @@
                                 <tr class="font-weight-bold">
                                     <td>Total</td>
                                     <td>{{ $transactions->count() }}</td>
-                                    <td>${{ number_format($transactions->sum->amount, 2) }}</td>
+                                    <td>${{ number_format($transactions->sum->discounted_amount, 2) }}</td>
                                 </tr>
                             </tfoot>
                         @endif
@@ -160,6 +160,7 @@
                                 <th>Drop Date</th>
                                 <th>Days</th>
                                 <th>Rate / Day</th>
+                                <th>Discount</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
@@ -174,7 +175,22 @@
                                     <td>{{ $item->drop_date }}</td>
                                     <td>{{ $item->days }}</td>
                                     <td>${{ number_format($item->car->rental_price_per_day, 2) }}</td>
-                                    <td>${{ number_format($item->amount, 2) }}</td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <span class="badge badge-info">{{ $item->discount_type }}: {{ $item->discount_reference }}</span>
+                                            <small class="d-block text-muted">{{ rtrim(rtrim(number_format($item->discount_percent, 2), '0'), '.') }}% off</small>
+                                        @else
+                                            <span class="text-muted">—</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($item->discount_type)
+                                            <small class="d-block text-muted" style="text-decoration: line-through;">${{ number_format($item->amount, 2) }}</small>
+                                            <strong class="text-success">${{ number_format($item->discounted_amount, 2) }}</strong>
+                                        @else
+                                            ${{ number_format($item->amount, 2) }}
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

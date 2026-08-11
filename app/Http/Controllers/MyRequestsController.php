@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\RentDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class MyRequestsController extends Controller
 
     public function index()
     {
-        $requests = RentDetail::with(['car.carType'])
+        $requests = RentDetail::with(['car.carType', 'coupon'])
             ->where('user_id', auth()->id())
             ->latest()
             ->get();
@@ -32,18 +33,37 @@ class MyRequestsController extends Controller
             'drop_date'         => ['required', 'date_format:m/d/Y', 'after_or_equal:pickup_date'],
             'delivery_type'     => ['required', 'in:pickup,delivery'],
             'delivery_location' => ['required_if:delivery_type,delivery', 'nullable', 'string', 'max:255'],
+            'coupon_code'       => ['nullable', 'string', 'max:50'],
+            'veteran_id'        => ['nullable', 'string', 'max:50'],
         ]);
+
+        if ($request->filled('coupon_code') && $request->filled('veteran_id')) {
+            return back()->withErrors([
+                'coupon_code' => 'You can only use one discount at a time — a coupon code or a veteran ID, not both.',
+            ])->withInput();
+        }
+
+        $couponId = null;
+        if ($request->filled('coupon_code')) {
+            $coupon = Coupon::where('code', strtoupper($request->coupon_code))->where('is_active', true)->first();
+            if (!$coupon) {
+                return back()->withErrors(['coupon_code' => 'This coupon code is invalid or no longer active.'])->withInput();
+            }
+            $couponId = $coupon->id;
+        }
 
         try {
             DB::beginTransaction();
             RentDetail::create([
-                'user_id'           => auth()->id(),
-                'car_id'            => $request->car_id,
-                'pickup_date'       => Carbon::createFromFormat('m/d/Y', $request->pickup_date)->format('Y-m-d'),
-                'drop_date'         => Carbon::createFromFormat('m/d/Y', $request->drop_date)->format('Y-m-d'),
-                'delivery_type'     => $request->delivery_type,
-                'delivery_location' => $request->delivery_location,
-                'status'            => 'pending',
+                'user_id'             => auth()->id(),
+                'car_id'              => $request->car_id,
+                'coupon_id'           => $couponId,
+                'veteran_id'          => $request->veteran_id,
+                'pickup_date'         => Carbon::createFromFormat('m/d/Y', $request->pickup_date)->format('Y-m-d'),
+                'drop_date'           => Carbon::createFromFormat('m/d/Y', $request->drop_date)->format('Y-m-d'),
+                'delivery_type'       => $request->delivery_type,
+                'delivery_location'   => $request->delivery_location,
+                'status'              => 'pending',
             ]);
             DB::commit();
             return back()->with('success', 'Rental request submitted successfully!');
