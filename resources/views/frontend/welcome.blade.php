@@ -197,6 +197,18 @@
                         </div>
                     </div>
                     <div style="clear: both; width: 100%; padding: 15px 15px 0; border-top: 1px solid #f2f2f2;">
+                        <div class="input1_wrapper" style="max-width: 260px; margin-bottom: 0;">
+                            <label>Rental Type</label>
+                            <div class="select1_inner">
+                                <select class="select2 select rental-type-select" name="rental_type" style="width: 100%" required>
+                                    <option value="daily" {{ old('rental_type', 'daily') == 'daily' ? 'selected' : '' }}>Daily</option>
+                                    <option value="weekly" {{ old('rental_type') == 'weekly' ? 'selected' : '' }}>Weekly</option>
+                                    <option value="uber_lyft_weekly" class="uber-lyft-option" hidden disabled {{ old('rental_type') == 'uber_lyft_weekly' ? 'selected' : '' }}>Uber/Lyft Weekly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="clear: both; width: 100%; padding: 15px 15px 0; border-top: 1px solid #f2f2f2;">
                         <small class="d-block" style="color: #888; font-size: 12px; margin-bottom: 8px;">Have a
                             discount coupon or veteran ID? Enter one below (only one can be used per booking).</small>
                         <div class="d-flex align-items-start flex-wrap" style="gap: 15px;">

@@ -34,23 +34,6 @@
                                 @enderror
                             </div>
 
-                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <span style="color:red;">*</span>Car Type</label>
-                                <select name="car_type"
-                                    class="form-control form-control-contact @error('car_type') is-invalid @enderror">
-                                    <option value="" disabled>--Car Type--</option>
-                                    @foreach ($data as $item)
-                                        <option value="{{ $item->id }}" {{ old('car_type', $car->car_type_id) == $item->id ? 'selected' : '' }}>
-                                            {{ $item->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('car_type')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
                             {{-- Make --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
                                 <span style="color:red;">*</span>Make</label>
@@ -92,13 +75,39 @@
 
                             {{-- Rent Per Day --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <span style="color:red;">*</span>Rent Per Day</label>
-                                <input type="number"
+                                <span style="color:red;">*</span>Daily Rate</label>
+                                <input type="number" step="0.01" min="0"
                                     class="form-control form-control-contact @error('rent_per_day') is-invalid @enderror"
-                                    placeholder="Rent" name="rent_per_day"
+                                    placeholder="e.g. 70" name="rent_per_day"
                                     value="{{ old('rent_per_day', $car->rental_price_per_day) }}" required>
 
                                 @error('rent_per_day')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Weekly Rate --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <span style="color:red;">*</span>Weekly Rate</label>
+                                <input type="number" step="0.01" min="0"
+                                    class="form-control form-control-contact @error('weekly_rate') is-invalid @enderror"
+                                    placeholder="e.g. 425" name="weekly_rate"
+                                    value="{{ old('weekly_rate', $car->weekly_rate) }}" required>
+
+                                @error('weekly_rate')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Uber/Lyft Weekly Rate --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                Uber/Lyft Weekly Rate <small class="text-muted">(optional)</small>
+                                <input type="number" step="0.01" min="0"
+                                    class="form-control form-control-contact @error('uber_lyft_weekly_rate') is-invalid @enderror"
+                                    placeholder="e.g. 425" name="uber_lyft_weekly_rate"
+                                    value="{{ old('uber_lyft_weekly_rate', $car->uber_lyft_weekly_rate) }}">
+
+                                @error('uber_lyft_weekly_rate')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -160,10 +169,10 @@
 
                             {{-- Luggage --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <span style="color:red;">*</span>Luggage</label>
+                                Luggage <small class="text-muted">(optional)</small>
                                 <input type="text"
                                     class="form-control form-control-contact @error('luggage') is-invalid @enderror"
-                                    placeholder="2 Bags" name="luggage" value="{{ old('luggage', $car->luggage) }}" required>
+                                    placeholder="2 Bags" name="luggage" value="{{ old('luggage', $car->luggage) }}">
 
                                 @error('luggage')
                                     <span class="text-danger">{{ $message }}</span>
@@ -172,10 +181,10 @@
 
                             {{-- Air Condition --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <span style="color:red;">*</span>Air Condition</label>
+                                Air Condition <small class="text-muted">(optional)</small>
                                 <select name="air_condition"
-                                    class="form-control form-control-contact @error('air_condition') is-invalid @enderror" required>
-                                    <option value="" disabled>--Air Condition--</option>
+                                    class="form-control form-control-contact @error('air_condition') is-invalid @enderror">
+                                    <option value="" {{ old('air_condition', $car->air_condition) === null ? 'selected' : '' }}>--Air Condition--</option>
                                     <option value="1" {{ (string) old('air_condition', $car->air_condition) === '1' ? 'selected' : '' }}>Yes</option>
                                     <option value="0" {{ (string) old('air_condition', $car->air_condition) === '0' ? 'selected' : '' }}>No</option>
                                 </select>

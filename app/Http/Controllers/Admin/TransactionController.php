@@ -16,7 +16,7 @@ class TransactionController extends Controller
         $period = $request->query('period', 'daily');
         abort_unless(in_array($period, self::PERIODS), 404);
 
-        $transactions = RentDetail::with(['user', 'car.carType', 'coupon'])
+        $transactions = RentDetail::with(['user', 'car', 'coupon'])
             ->where('status', 'approved')
             ->latest()
             ->get();

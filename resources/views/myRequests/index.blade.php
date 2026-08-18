@@ -22,7 +22,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Car</th>
-                                <th>Type</th>
                                 <th>Pickup Date</th>
                                 <th>Drop Date</th>
                                 <th>Delivery</th>
@@ -38,7 +37,6 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->car->make }} {{ $item->car->model }} ({{ $item->car->year }})</td>
-                                    <td>{{ $item->car->carType->name }}</td>
                                     <td>{{ $item->pickup_date }}</td>
                                     <td>{{ $item->drop_date }}</td>
                                     <td>

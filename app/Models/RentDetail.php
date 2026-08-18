@@ -15,6 +15,7 @@ class RentDetail extends Model
     protected $fillable = [
         'user_id',
         'car_id',
+        'rental_type',
         'coupon_id',
         'veteran_id',
         'pickup_date',
@@ -48,11 +49,42 @@ class RentDetail extends Model
     }
 
     /**
-     * Revenue for this rental (rate per day x days).
+     * Billable weeks for weekly-type rentals (any partial week rounds up to a full week).
+     */
+    public function getWeeksAttribute(): int
+    {
+        return (int) ceil($this->days / 7);
+    }
+
+    /**
+     * Human-readable label for the rental type (Daily, Weekly, Uber/Lyft Weekly),
+     * including the day/week count that was actually billed.
+     */
+    public function getRentalTypeLabelAttribute(): string
+    {
+        return match ($this->rental_type) {
+            'weekly' => 'Weekly (' . $this->weeks . ' week' . ($this->weeks > 1 ? 's' : '') . ')',
+            'uber_lyft_weekly' => 'Uber/Lyft Weekly (' . $this->weeks . ' week' . ($this->weeks > 1 ? 's' : '') . ')',
+            default => 'Daily (' . $this->days . ' day' . ($this->days > 1 ? 's' : '') . ')',
+        };
+    }
+
+    /**
+     * Revenue for this rental — the daily rate x days, or the weekly / Uber-Lyft weekly
+     * rate x the number of weeks billed (any partial week rounds up), depending on the
+     * rental type chosen at booking time.
      */
     public function getAmountAttribute(): float
     {
-        return $this->car ? (float) $this->car->rental_price_per_day * $this->days : 0.0;
+        if (!$this->car) {
+            return 0.0;
+        }
+
+        return match ($this->rental_type) {
+            'weekly' => (float) ($this->car->weekly_rate ?? 0) * $this->weeks,
+            'uber_lyft_weekly' => (float) ($this->car->uber_lyft_weekly_rate ?? 0) * $this->weeks,
+            default => (float) $this->car->rental_price_per_day * $this->days,
+        };
     }
 
     /**

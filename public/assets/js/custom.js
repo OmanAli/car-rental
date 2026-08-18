@@ -590,16 +590,33 @@ $(function () {
     $("a.vid").YouTubePopUp();
     
     // Select2
-    $('.select2').select2({
+    $('.select2').not('select[name="car_id"]').select2({
         minimumResultsForSearch: Infinity
     });
-    
+    // Car dropdowns get a type-to-search box regardless of how many cars there are.
+    $('select[name="car_id"].select2').select2({
+        minimumResultsForSearch: 0
+    });
+
     // Datepicker
     $(".datepicker").datepicker({
-        orientation: "top"
-        
+        orientation: "top",
+        minDate: 0
     });
-    
+
+    // Keep Drop Date >= Pick Up Date (and both stay >= today via minDate above)
+    $('input[name="pickup_date"]').on('change', function () {
+        var $pickup = $(this);
+        var $drop = $pickup.closest('form').find('input[name="drop_date"]');
+        var pickupDate = $pickup.datepicker('getDate');
+        if (!pickupDate || !$drop.length) return;
+        $drop.datepicker('option', 'minDate', pickupDate);
+        var dropDate = $drop.datepicker('getDate');
+        if (!dropDate || dropDate < pickupDate) {
+            $drop.datepicker('setDate', pickupDate);
+        }
+    });
+
     // Scroll back to top
     var progressPath = document.querySelector('.progress-wrap path');
     var pathLength = progressPath.getTotalLength();

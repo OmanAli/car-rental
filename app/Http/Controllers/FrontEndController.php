@@ -9,7 +9,7 @@ class FrontEndController extends Controller
 {
     public function welcome()
     {
-        $cars = Car::with('carType')->where('status', 1)->get();
+        $cars = Car::where('status', 1)->get();
         return view('frontend.welcome', compact('cars'));
     }
     public function about()
@@ -18,7 +18,7 @@ class FrontEndController extends Controller
     }
     public function services()
     {
-        $cars = Car::with('carType')->where('status', 1)->get();
+        $cars = Car::where('status', 1)->get();
         return view('frontend.services', compact('cars'));
     }
     public function service_details()
@@ -28,13 +28,12 @@ class FrontEndController extends Controller
 
     public function cars()
     {
-        $cars = Car::with('carType')->where('status', 1)->get();
+        $cars = Car::where('status', 1)->get();
         return view('frontend.cars', compact('cars'));
     }
 
     public function car_details(Car $car)
     {
-        $car->load('carType');
         return view('frontend.car_detail', compact('car'));
     }
 

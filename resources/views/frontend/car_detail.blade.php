@@ -9,7 +9,7 @@
         <div class="v-middle">
             <div class="container">
                 <div class="col-md-12">
-                    <h6>{{ optional($car->carType)->name ?? 'Luxury Cars' }}</h6>
+                    <h6>Luxury Cars</h6>
                     <h1>{{ $car->make }} {{ $car->model }}</h1>
                 </div>
             </div>
@@ -90,6 +90,16 @@
                             <h4>${{ rtrim(rtrim(number_format($car->rental_price_per_day, 2), '0'), '.') }} <span>/ rent per day</span></h4>
                         </div>
                         <div class="item">
+                            @if ($car->weekly_rate !== null)
+                                <div class="features"><span><i class="omfi-calendar"></i> Weekly Rate</span>
+                                    <p>${{ rtrim(rtrim(number_format($car->weekly_rate, 2), '0'), '.') }}</p>
+                                </div>
+                            @endif
+                            @if ($car->uber_lyft_weekly_rate !== null)
+                                <div class="features"><span style="white-space: nowrap;"><i class="omfi-tag"></i> Uber/Lyft Rate</span>
+                                    <p>${{ rtrim(rtrim(number_format($car->uber_lyft_weekly_rate, 2), '0'), '.') }}</p>
+                                </div>
+                            @endif
                             <div class="features"><span><i class="omfi-door"></i> Doors</span>
                                 <p>{{ $car->doors ?? '-' }}</p>
                             </div>

@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('frontend.*', function ($view) {
             if (Schema::hasTable('cars')) {
-                $view->with('rentModalCars', Car::with('carType')->where('status', 1)->get());
+                $view->with('rentModalCars', Car::where('status', 1)->get());
             } else {
                 $view->with('rentModalCars', collect());
             }

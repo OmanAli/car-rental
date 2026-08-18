@@ -49,19 +49,6 @@
          Cars Management
      </div>
       <li class="nav-item">
-         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCarType"
-             aria-expanded="true" aria-controls="collapseCarType">
-            <i class="fas fa-car-side"></i>
-            <span>Car Types</span>
-         </a>
-         <div id="collapseCarType" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-             <div class="bg-white py-2 collapse-inner rounded">
-                 <a class="collapse-item" href="{{route('carType.index')}}">Index</a>
-                 <a class="collapse-item" href="{{route('carType.create')}}">Add</a>
-             </div>
-         </div>
-     </li>
-     <li class="nav-item">
          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
              aria-expanded="true" aria-controls="collapseTwo">
              <i class="fas fa-fw fa-car"></i>

@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\CarController;
-use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RentDetailController;
 use App\Http\Controllers\Admin\SiteSettingController;
@@ -33,15 +32,6 @@ Route::prefix('profile')->name('profile.')->middleware('auth')->group(function()
     Route::post('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
 });
 
-// Car Type Routes
-Route::prefix('carType')->name('carType.')->middleware('auth')->group(function(){
-    Route::get('/', [CarTypeController::class, 'index'])->name('index');
-    Route::get('/create', [CarTypeController::class, 'create'])->name('create');
-    Route::post('/store', [CarTypeController::class, 'store'])->name('store');
-    Route::post('/update', [CarTypeController::class, 'update'])->name('update');
-});
-
-
 // User Management (Admin)
 Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
@@ -57,6 +47,8 @@ Route::prefix('users')->name('users.')->middleware('auth')->group(function () {
 Route::prefix('my-requests')->name('myRequests.')->middleware('auth')->group(function () {
     Route::get('/', [MyRequestsController::class, 'index'])->name('index');
     Route::post('/store', [MyRequestsController::class, 'store'])->name('store');
+    Route::get('/preview-discount', [MyRequestsController::class, 'previewDiscount'])->name('previewDiscount');
+    Route::get('/refresh-csrf-token', [MyRequestsController::class, 'refreshCsrfToken'])->name('refreshCsrfToken');
 });
 
 // Rent Detail Routes
@@ -102,4 +94,5 @@ Route::prefix('cars')->name('cars.')->middleware('auth')->group(function(){
     Route::get('/{id}/edit', [CarController::class, 'edit'])->name('edit');
     Route::put('/{id}/update', [CarController::class, 'update'])->name('update');
     Route::delete('/{id}/destroy', [CarController::class, 'destroy'])->name('destroy');
+    Route::post('/import', [CarController::class, 'import'])->name('import');
 });
