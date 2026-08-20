@@ -196,7 +196,7 @@
 
                             {{-- Image --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <label>Car Image</label>
+                                <label>Cover Image</label>
                                 @if ($car->image)
                                     <div class="mb-2">
                                         <img src="{{ asset($car->image) }}" alt="Car"
@@ -206,9 +206,22 @@
                                 <input type="file" accept="image/*"
                                     class="form-control form-control-contact @error('image') is-invalid @enderror"
                                     name="image">
-                                <small class="text-muted">Leave empty to keep current. JPG, PNG or WEBP. Max 4MB.</small>
+                                <small class="text-muted">Used as the main thumbnail. Leave empty to keep current. JPG, PNG or WEBP. Max 4MB.</small>
 
                                 @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Additional Images --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <label>Add More Images (Gallery)</label>
+                                <input type="file" accept="image/*" multiple
+                                    class="form-control form-control-contact @error('images.*') is-invalid @enderror"
+                                    name="images[]">
+                                <small class="text-muted">Adds to the existing gallery below. You can select multiple files. JPG, PNG or WEBP. Max 4MB each.</small>
+
+                                @error('images.*')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -221,6 +234,29 @@
                         <a class="btn btn-primary float-right mr-3 mb-3" href="{{ route('cars.index') }}">Cancel</a>
                     </div>
                 </form>
+
+                @if ($car->images->count())
+                    <div class="card-body">
+                        <label>Gallery Images</label>
+                        <div class="d-flex flex-wrap" style="gap: 12px;">
+                            @foreach ($car->images as $galleryImage)
+                                <div class="position-relative">
+                                    <img src="{{ asset($galleryImage->path) }}" alt="Gallery image"
+                                        style="height:90px;width:130px;object-fit:cover;border-radius:4px;border:1px solid #ddd;">
+                                    <form action="{{ route('cars.images.destroy', $galleryImage->id) }}" method="POST"
+                                        onsubmit="return confirm('Remove this image?');"
+                                        style="position:absolute; top:4px; right:4px;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" style="padding:2px 7px;" title="Remove">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -34,6 +34,7 @@ class FrontEndController extends Controller
 
     public function car_details(Car $car)
     {
+        $car->load('images');
         return view('frontend.car_detail', compact('car'));
     }
 

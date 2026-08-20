@@ -177,13 +177,26 @@
 
                             {{-- Image --}}
                             <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
-                                <label>Car Image</label>
+                                <label>Cover Image</label>
                                 <input type="file" accept="image/*"
                                     class="form-control form-control-contact @error('image') is-invalid @enderror"
                                     name="image">
-                                <small class="text-muted">JPG, PNG or WEBP. Max 4MB.</small>
+                                <small class="text-muted">Used as the main thumbnail. JPG, PNG or WEBP. Max 4MB.</small>
 
                                 @error('image')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- Additional Images --}}
+                            <div class="col-sm-6 mb-3 mt-3 mb-sm-0">
+                                <label>Additional Images (Gallery)</label>
+                                <input type="file" accept="image/*" multiple
+                                    class="form-control form-control-contact @error('images.*') is-invalid @enderror"
+                                    name="images[]">
+                                <small class="text-muted">Shown in the car's photo gallery. You can select multiple files. JPG, PNG or WEBP. Max 4MB each.</small>
+
+                                @error('images.*')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

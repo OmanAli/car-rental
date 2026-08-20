@@ -95,4 +95,5 @@ Route::prefix('cars')->name('cars.')->middleware('auth')->group(function(){
     Route::put('/{id}/update', [CarController::class, 'update'])->name('update');
     Route::delete('/{id}/destroy', [CarController::class, 'destroy'])->name('destroy');
     Route::post('/import', [CarController::class, 'import'])->name('import');
+    Route::delete('/images/{id}', [CarController::class, 'destroyImage'])->name('images.destroy');
 });

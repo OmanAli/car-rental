@@ -41,23 +41,31 @@
                         </div>
                     </div>
                     <!--  Gallery Image -->
-                    @if ($car->image)
+                    @php
+                        $galleryImages = collect([$car->image])
+                            ->merge($car->images->pluck('path'))
+                            ->filter()
+                            ->values();
+                    @endphp
+                    @if ($galleryImages->isNotEmpty())
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Image</h3>
+                                <h3>{{ $galleryImages->count() > 1 ? 'Images' : 'Image' }}</h3>
                             </div>
                         </div>
-                        <div class="row gallery-items mb-60">
-                            <div class="col-md-12 gallery-masonry-wrapper single-item cardio">
-                                <a href="{{ asset($car->image) }}" title="" class="gallery-masonry-item-img-link img-zoom">
-                                    <div class="gallery-box">
-                                        <div class="gallery-img">
-                                            <img src="{{ asset($car->image) }}" class="img-fluid mx-auto d-block" alt="">
+                        <div class="row car-gallery-items mb-60">
+                            @foreach ($galleryImages as $imagePath)
+                                <div class="{{ $galleryImages->count() > 1 ? 'col-md-4' : 'col-md-12' }} gallery-masonry-wrapper cardio mb-3">
+                                    <a href="{{ asset($imagePath) }}" title="" class="gallery-masonry-item-img-link img-zoom">
+                                        <div class="gallery-box">
+                                            <div class="gallery-img">
+                                                <img src="{{ asset($imagePath) }}" class="img-fluid mx-auto d-block" alt="">
+                                            </div>
+                                            <div class="gallery-masonry-item-img"></div>
                                         </div>
-                                        <div class="gallery-masonry-item-img"></div>
-                                    </div>
-                                </a>
-                            </div>
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
                     @endif
                     <!-- FAQs -->

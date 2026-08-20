@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Car;
+use App\Models\CarImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -60,6 +61,7 @@ class CarController extends Controller
             'luggage' => ['nullable', 'string'],
             'air_condition' => ['nullable', 'in:0,1'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         try {
@@ -67,7 +69,7 @@ class CarController extends Controller
 
             $imagePath = $this->storeCarImage($request);
 
-            Car::create([
+            $car = Car::create([
                 'make' => $request->make,
                 'model' => $request->model,
                 'year' => $request->year,
@@ -82,6 +84,9 @@ class CarController extends Controller
                 'air_condition' => $request->boolean('air_condition'),
                 'image' => $imagePath,
             ]);
+
+            $this->storeCarGalleryImages($request, $car);
+
             DB::commit();
             return redirect()->route('cars.index')->with('success', 'Data Inserted Successfully!');
         } catch (\Throwable $th) {
@@ -220,7 +225,7 @@ class CarController extends Controller
 
     public function edit($id)
     {
-        $car = Car::findOrFail($id);
+        $car = Car::with('images')->findOrFail($id);
         return view('cars.edit', compact('car'));
     }
 
@@ -241,6 +246,7 @@ class CarController extends Controller
             'luggage' => ['nullable', 'string'],
             'air_condition' => ['nullable', 'in:0,1'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
         ]);
 
         try {
@@ -269,6 +275,8 @@ class CarController extends Controller
             }
 
             $car->update($payload);
+            $this->storeCarGalleryImages($request, $car);
+
             DB::commit();
             return redirect()->route('cars.index')->with('success', 'Car Updated Successfully!');
         } catch (\Throwable $th) {
@@ -281,11 +289,30 @@ class CarController extends Controller
     {
         try {
             DB::beginTransaction();
-            $car = Car::findOrFail($id);
+            $car = Car::with('images')->findOrFail($id);
             $this->deleteCarImage($car->image);
+            foreach ($car->images as $galleryImage) {
+                $this->deleteCarImage($galleryImage->path);
+            }
             $car->delete();
             DB::commit();
             return redirect()->route('cars.index')->with('success', 'Car Deleted Successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function destroyImage($id)
+    {
+        try {
+            DB::beginTransaction();
+            $image = CarImage::findOrFail($id);
+            $carId = $image->car_id;
+            $this->deleteCarImage($image->path);
+            $image->delete();
+            DB::commit();
+            return redirect()->route('cars.edit', $carId)->with('success', 'Image removed successfully.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
@@ -303,6 +330,30 @@ class CarController extends Controller
         $file->move(public_path('uploads/cars'), $filename);
 
         return 'uploads/cars/' . $filename;
+    }
+
+    private function storeCarGalleryImages(Request $request, Car $car): void
+    {
+        if (!$request->hasFile('images')) {
+            return;
+        }
+
+        $nextSortOrder = (int) $car->images()->max('sort_order') + 1;
+
+        foreach ($request->file('images') as $file) {
+            if (!$file || !$file->isValid()) {
+                continue;
+            }
+
+            $filename = uniqid('car_', true) . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/cars'), $filename);
+
+            CarImage::create([
+                'car_id' => $car->id,
+                'path' => 'uploads/cars/' . $filename,
+                'sort_order' => $nextSortOrder++,
+            ]);
+        }
     }
 
     private function deleteCarImage(?string $path): void
