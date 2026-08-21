@@ -9,8 +9,8 @@
     <link rel="shortcut icon" href="{{ asset('assets/Logo_t.png') }}" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
-    <link rel="stylesheet" href="{{ asset('assets/css/plugins.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/plugins.css') }}?v={{ @filemtime(public_path('assets/css/plugins.css')) }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?v={{ @filemtime(public_path('assets/css/style.css')) }}" />
 </head>
 
 <body>
