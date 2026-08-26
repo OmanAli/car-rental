@@ -75,46 +75,6 @@
     </section>
     <!-- divider line -->
     <div class="line-vr-section"></div>
-    <!-- Services 2 -->
-    <section class="services2 section-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center mb-30">
-                    <div class="section-subtitle">{{ setting('home.services.subtitle') }}</div>
-                    <div class="section-title">{{ setting('home.services.title') }} <span>{{ setting('home.services.title_colored') }}</span></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                <div class="owl-carousel owl-theme">
-                    @for ($i = 1; $i <= 6; $i++)
-                        <div class="item"> <img src="{{ setting_image("shared.services.item{$i}_image") }}" class="img-fluid" alt="">
-                            <div class="bottom-fade"></div>
-                            <div class="title">
-                                <h4><a href="{{ route('service_details') }}">{{ setting("shared.services.item{$i}_title") }}</a></h4>
-                            </div>
-                            <div class="curv-butn icon-bg">
-                                <a href="{{ route('service_details') }}" class="vid">
-                                    <div class="icon">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</div>
-                                </a>
-                                <div class="br-left-top">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11">
-                                        <path d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z" fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                                <div class="br-right-bottom">
-                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11">
-                                        <path d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z" fill="#ffffff"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    @endfor
-                </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Booking Search -->
     <section id="booking" data-scroll-index="1" class="background bg-img bg-fixed section-padding" data-overlay-dark="5" data-background="{{ setting_image('home.booking.background') }}">
         <div class="container">
@@ -242,6 +202,46 @@
                     </div>
                 </div>
                 @endguest
+            </div>
+        </div>
+    </section>
+    <!-- Services 2 -->
+    <section class="services2 section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center mb-30">
+                    <div class="section-subtitle">{{ setting('home.services.subtitle') }}</div>
+                    <div class="section-title">{{ setting('home.services.title') }} <span>{{ setting('home.services.title_colored') }}</span></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                <div class="owl-carousel owl-theme">
+                    @for ($i = 1; $i <= 6; $i++)
+                        <div class="item"> <img src="{{ setting_image("shared.services.item{$i}_image") }}" class="img-fluid" alt="">
+                            <div class="bottom-fade"></div>
+                            <div class="title">
+                                <h4><a href="{{ route('service_details') }}">{{ setting("shared.services.item{$i}_title") }}</a></h4>
+                            </div>
+                            <div class="curv-butn icon-bg">
+                                <a href="{{ route('service_details') }}" class="vid">
+                                    <div class="icon">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}</div>
+                                </a>
+                                <div class="br-left-top">
+                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11">
+                                        <path d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z" fill="#ffffff"></path>
+                                    </svg>
+                                </div>
+                                <div class="br-right-bottom">
+                                    <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11">
+                                        <path d="M11 1.54972e-06L0 0L2.38419e-07 11C1.65973e-07 4.92487 4.92487 1.62217e-06 11 1.54972e-06Z" fill="#ffffff"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+                </div>
             </div>
         </div>
     </section>
